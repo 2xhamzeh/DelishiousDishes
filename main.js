@@ -8,4 +8,6 @@ app.get("/", (req,res)=>{
 
 app.get("/users/:id", userController.sendUserProfile);
 
+app.post("/sign_up", homeController.userSignUpProcessor);
+
 app.listen(3000);
