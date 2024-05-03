@@ -12,3 +12,9 @@ exports.userSignUpProcessor =(req, res) => {
   console.log(req.body);
   res.send("Sign-up Successful!");
 };
+
+// passing content from the controller to the view and displaying it with a view template
+exports.respondWithName = (req, res) => {
+    let paramsName = req.params.myName;
+    res.render("index", { name: paramsName });
+};
