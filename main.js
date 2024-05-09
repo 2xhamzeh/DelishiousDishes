@@ -7,7 +7,7 @@ app.use(express.static('public'));
 const layouts = require("express-ejs-layouts");
 
 app.get("/", (req,res)=>{
-    res.send("Welcome to the home Page!");
+    res.render("index", { name: "Your Name" });
 });
 
 app.get("/users/:id", userController.sendUserProfile);
