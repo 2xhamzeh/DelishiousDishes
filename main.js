@@ -14,6 +14,7 @@ app.get("/users/:id", userController.sendUserProfile);
 
 app.post("/sign_up", userController.userSignUpProcessor);
 app.get("/name/:myName", userController.respondWithName);
+app.get("/contact", userController.respondWithContactInfo);
 
 app.use(layouts);
 app.set("view engine", "ejs");

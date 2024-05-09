@@ -18,3 +18,7 @@ exports.respondWithName = (req, res) => {
     let paramsName = req.params.myName;
     res.render("index", { name: paramsName });
 };
+
+exports.respondWithContactInfo = (req, res) => {
+  res.render("contact", {email: "cuisinefire@gmail.com", phone: "01734450128"});
+}
