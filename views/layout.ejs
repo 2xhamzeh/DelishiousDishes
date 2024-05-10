@@ -1,5 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name of the Website</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
 <body>
+    <!-- Include navigation partial -->
     <%- include('partials/navigation.ejs') %>
-    <%- body %>
+
+    <!-- Main content -->
+    <%- include ('partials/layout.ejs') %>
+
+    <!-- Include footer partial -->
     <%- include('partials/footer.ejs') %>
 </body>
+</html>

@@ -9,10 +9,11 @@
   "author": "Hamzeh, Truc, Marwa",
   "license": "ISC",
   "dependencies": {
-    "http-status-codes": "^2.3.0",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "express-ejs-layouts": "^2.5.1"
-
+    "express-ejs-layouts": "^2.5.1",
+    "http-status-codes": "^2.3.0",
+    "mongodb": "^6.6.1",
+    "mongoose": "^8.3.4"
   }
 }
