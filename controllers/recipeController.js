@@ -13,14 +13,10 @@ exports.getAllRecipes = (req, res) => {
     .catch((error) => {
       console.log(error.message);
       return [];
-    })
-    .then(() => {
-      console.log("Promise Complete");
     });
 };
 
 exports.addRecipe = (req, res) => {
-  //console.log(req.body);
   const r = new Recipe({
     name: req.body.name,
     ingredients: req.body.ingredients,
@@ -28,10 +24,9 @@ exports.addRecipe = (req, res) => {
   });
   r.save()
     .then(() => {
-      res.send("thanks");
+      res.send(200);
     })
     .catch((error) => {
       res.send(error);
     });
-  //res.send(req.body);
 };
