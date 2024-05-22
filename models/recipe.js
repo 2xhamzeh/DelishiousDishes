@@ -1,46 +1,19 @@
-"use strict"
+// for a model we require mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/recipe_db", {
-  useNewUrlParser: true,
-});
-const db = mongoose.connection;
+// no need to create a connection, we just want to create a schema and export a model
 
-db.once("open", () => {
-  console.log("Successfully connected to MongoDB using Mongoose!");
-});
-
+// create the schema
 const recipeSchema = mongoose.Schema({
-  meal: String,
-  formOfNutrition: String,
-  time: String,
-  zipCode: Number,
+  name: String,
+
+  // ingredients and instructions should be string arrays like this: [String]
+  // keeping them normal strings for now for simplicity
+  ingredients: String,
+  instructions: String,
 });
 
+// then export the model so we can use it in the controller
 module.exports = mongoose.model("Recipe", recipeSchema);
 
-const Recipe = mongoose.model("Recipe", recipeSchema);
-
-var recipe1 = new Recipe({
-    meal: "Vegane Protein-Bowl",
-    formOfNutrition: "Vegan",
-    time: "40 min",
-  });
-  recipe1.save()
-    .then(savedDocument => {
-      console.log(savedDocument);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-    Recipe.create({
-        meal: "Spaghetti Amatriciana",
-    formOfNutrition: "Laktosefrei",
-    time: "30 min",
-  })
-  .then(savedDocument => {
-    console.log(savedDocument);
-  })
-  .catch(error => {
-    console.log(error);
-  });
+//note: we use module.exports = sth.. when we want to export a single function
+// we use exports.functionName()... when we want to export many functions
