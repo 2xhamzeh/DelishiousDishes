@@ -7,13 +7,13 @@ app.use(express.json());
 const errorController = require("./controllers/errorController");
 
 // routers, importing routers from routes folder
-const userRouter = require("./routes/userRoutes");
-app.use("/users", userRouter);
+const userRouter = require("./routes/usersRoutes");
+app.use("/users", userRouter); // this adds the /users part before all routes in userRouter
 
-const recipeRouter = require("./routes/recipeRoutes");
+const recipeRouter = require("./routes/recipesRoutes");
 app.use("/recipes", recipeRouter);
 
-const defaultRouter = require("./routes/defaultRoutes");
+const defaultRouter = require("./routes/homeRoutes");
 app.use(defaultRouter);
 
 // connect to database through mongoose and save connection in db if needed
