@@ -4,9 +4,12 @@
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/recipe_db");
 const db = mongoose.connection;
+db.on("error", () => console.log("Connection to DB failed!"));
+db.once("open", () => console.log("connected to DB"));
 
 // import models
 const Recipe = require("./models/recipe");
+const User = require("./models/user");
 
 // the recipes we want to add
 const recipes = [
@@ -48,35 +51,35 @@ const users = [
   },
 ];
 
-// delete all current recipe data
-Recipe.deleteMany()
-  .exec()
-  .then(() => console.log("Recipe data is empty!"));
+// Function to seed the database
+// not using promises like in the book, because the data is being inserted before deletion is finished
+// to do the following with promises, we'd need lots of chaining
+// its good to also learn this async() await syntax, its a different way to use promises
+const seedDatabase = async () => {
+  try {
+    // delete all current recipe data
+    await Recipe.deleteMany();
+    console.log("Recipe data deleted!");
 
-// delete all current user data
-// TODO
+    // delete all current user data
+    await User.deleteMany();
+    console.log("User data deleted!");
 
-//the array that stores all the commands (model creations) we want to execute
-let commands = [];
+    // create new recipes
+    await Recipe.create(recipes);
+    console.log("Recipes created!");
 
-// for every recipe we add a create command
-recipes.forEach((r) => {
-  commands.push(
-    Recipe.create({
-      name: r.name,
-      ingredients: r.ingredients,
-      instructions: r.instructions,
-    })
-  );
-});
+    // create new users
+    await User.create(users);
+    console.log("Users created!");
 
-// for every user we add a create command
-// TODO
-
-// run all commands and close connection
-Promise.all(commands)
-  .then(() => {
-    console.log("Data created!");
+    // close the connection
     mongoose.connection.close();
-  })
-  .catch((error) => console.log(error));
+    console.log("Database connection closed.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Run the seed function
+seedDatabase();

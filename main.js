@@ -25,13 +25,14 @@ app.use(defaultRouter);
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/recipe_db");
 const db = mongoose.connection;
-// tell mongoose we want to use native ES6 promises
-mongoose.Promise = global.Promise;
-
+// in case connection fails
+db.on("error", () => console.log("Connection to DB failed!"));
 // once connected to database, run once.
 db.once("open", () => {
   console.log("Connected to MongoDB!");
 });
+// tell mongoose we want to use native ES6 promises
+mongoose.Promise = global.Promise;
 
 // using public as main directory for static content (styles, images, ...)
 app.use(express.static("public"));
