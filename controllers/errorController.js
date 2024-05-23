@@ -4,9 +4,7 @@ const httpStatus = require("http-status-codes");
 exports.respondNoResourceFound = (req, res) => {
   let errorCode = httpStatus.StatusCodes.NOT_FOUND;
   res.status(errorCode);
-  res.sendFile(`./public/errorHTML/${errorCode}.html`, {
-    root: "./",
-  });
+  res.render("404");
 };
 
 // responds with internal error code
