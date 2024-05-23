@@ -3,6 +3,11 @@ const app = express();
 // this is a body parser, allows us to read body data
 app.use(express.json());
 
+// setting up the ejs layout
+const layouts = require("express-ejs-layouts");
+app.use(layouts);
+app.set("view engine", "ejs");
+
 // Controllers
 const errorController = require("./controllers/errorController");
 
@@ -10,7 +15,7 @@ const errorController = require("./controllers/errorController");
 const userRouter = require("./routes/usersRoutes");
 app.use("/users", userRouter); // this adds the /users part before all routes in userRouter
 
-const recipeRouter = require("./routes/recipesRoutes");
+const recipeRouter = require("./routes/recipeRoutes");
 app.use("/recipes", recipeRouter);
 
 const defaultRouter = require("./routes/homeRoutes");
@@ -30,11 +35,6 @@ db.once("open", () => {
 
 // using public as main directory for static content (styles, images, ...)
 app.use(express.static("public"));
-
-// setting up the ejs layout
-const layouts = require("express-ejs-layouts");
-app.use(layouts);
-app.set("view engine", "ejs");
 
 // old code for reference
 // app.get("/", (req, res) => {
