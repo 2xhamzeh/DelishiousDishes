@@ -4,6 +4,7 @@ const Recipe = require("../models/recipe");
 // and we can write down all the operations we want to do with it.
 // we use exports.functionName to so we can use the functions where needed
 
+// sends all recipes available
 exports.getAllRecipes = (req, res) => {
   Recipe.find({})
     .exec()
@@ -16,17 +17,17 @@ exports.getAllRecipes = (req, res) => {
     });
 };
 
+// adds a single recipe to database
 exports.addRecipe = (req, res) => {
-  const r = new Recipe({
+  const recipe = new Recipe({
     name: req.body.name,
     ingredients: req.body.ingredients,
     instructions: req.body.instructions,
   });
-  r.save()
+  recipe
+    .save()
     .then(() => {
-      res.send(200);
+      res.sendStatus(200);
     })
-    .catch((error) => {
-      res.send(error);
-    });
+    .catch((error) => console.log(error));
 };

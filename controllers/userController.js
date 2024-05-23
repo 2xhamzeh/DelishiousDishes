@@ -20,8 +20,7 @@ exports.signup = (req, res) => {
   user
     .save()
     .then(() => {
-      console.log(`User ${req.body.username} saved!`);
-      res.send(200);
+      res.sendStatus(200);
     })
     .catch((error) => console.log(error));
 };
