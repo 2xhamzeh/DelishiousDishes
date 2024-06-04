@@ -10,7 +10,6 @@ db.once("open", () => console.log("Connected to DB"));
 // Import models
 const Recipe = require("./models/recipe");
 const User = require("./models/user");
-const Post = require("./models/Post");
 
 // The recipes we want to add
 const recipes = [
@@ -40,7 +39,7 @@ const recipes = [
 const users = [
   {
     username: "admin",
-    password: "admin123",  // Updated to meet the minimum length requirement
+    password: "admin123", // Updated to meet the minimum length requirement
   },
   {
     username: "user123",
@@ -49,22 +48,6 @@ const users = [
   {
     username: "TheRandomUser",
     password: "mehaha",
-  },
-];
-
-// The posts we added
-const posts = [
-  {
-    title: "First Post",
-    content: "This is the content of the first post.",
-  },
-  {
-    title: "Second Post",
-    content: "This is the content of the second post.",
-  },
-  {
-    title: "Third Post",
-    content: "This is the content of the third post.",
   },
 ];
 
@@ -79,32 +62,25 @@ const seedDatabase = async () => {
     await User.deleteMany();
     console.log("User data deleted!");
 
-    // Delete all current post data
-    await Post.deleteMany();
-    console.log("Post data deleted!");
-
-    // Create new recipes
-    await Recipe.create(recipes);
-    console.log("Recipes created!");
-
-    // Creating new users and associating posts with them
+    // Creating new users and associating recipes with them
     const createdUsers = await User.create(users);
     console.log("Users created!");
 
-    // Creating new posts and associating them with users
-    for (let i = 0; i < posts.length; i++) {
-      // Assign each post to a user 
+    // Creating new recipes and associating them with users
+    for (let i = 0; i < recipes.length; i++) {
+      // Assign each recipe to a user
       const user = createdUsers[i % createdUsers.length];
-      const post = new Post({
-        title: posts[i].title,
-        content: posts[i].content,
-        author: user._id
+      const recipe = new Recipe({
+        name: recipes[i].name,
+        ingredients: recipes[i].ingredients,
+        instructions: recipes[i].instructions,
+        author: user._id,
       });
-      await post.save();
-      user.posts.push(post._id);
+      await recipe.save();
+      user.recipes.push(recipe._id);
       await user.save();
     }
-    console.log("Posts created and associated with users!");
+    console.log("Recipes created and associated with users!");
 
     // Close the connection
     mongoose.connection.close();

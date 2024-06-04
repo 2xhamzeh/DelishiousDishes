@@ -4,12 +4,23 @@ const mongoose = require("mongoose");
 
 // create the schema
 const recipeSchema = mongoose.Schema({
-  name: String,
-
+  name: {
+    type: String,
+    required: true,
+  },
   // ingredients and instructions should be string arrays like this: [String]
   // keeping them normal strings for now for simplicity
-  ingredients: String,
-  instructions: String,
+  ingredients: {
+    type: String,
+  },
+  instructions: {
+    type: String,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 // then export the model so we can use it in the controller
