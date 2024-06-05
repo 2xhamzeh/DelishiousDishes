@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 // this is a body parser, allows us to read body data
 app.use(express.json());
+
+app.use(cors());
 
 // setting up the ejs layout
 const layouts = require("express-ejs-layouts");
