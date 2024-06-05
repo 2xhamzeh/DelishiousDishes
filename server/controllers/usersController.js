@@ -2,15 +2,13 @@
 const User = require("../models/user");
 
 module.exports = {
-  getAllUsers: (req, res) => {
+  getAllUsers: (req, res, next) => {
     User.find({})
       .exec()
       .then((users) => {
         res.send(users);
       })
-      .catch((error) => {
-        console.log(error.message);
-      });
+      .catch(next);
   },
 
   signup: (req, res, next) => {

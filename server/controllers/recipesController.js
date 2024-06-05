@@ -7,20 +7,17 @@ const Recipe = require("../models/recipe");
 
 module.exports = {
   // sends all recipes available
-  getAllRecipes: (req, res) => {
+  getAllRecipes: (req, res, next) => {
     Recipe.find({})
       .exec()
       .then((recipes) => {
         res.send(recipes);
       })
-      .catch((error) => {
-        console.log(error.message);
-        return [];
-      });
+      .catch(next);
   },
 
   // adds a single recipe to database
-  addRecipe: (req, res) => {
+  addRecipe: (req, res, next) => {
     const recipe = new Recipe({
       name: req.body.name,
       ingredients: req.body.ingredients,
@@ -31,6 +28,6 @@ module.exports = {
       .then(() => {
         res.sendStatus(200);
       })
-      .catch((error) => console.log(error));
+      .catch(next);
   },
 };

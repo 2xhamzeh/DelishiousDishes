@@ -4,6 +4,4 @@ const homeController = require("../controllers/homeController");
 
 router.get("/", homeController.homePage);
 
-router.get("/contact", homeController.contactPage);
-
 module.exports = router;
