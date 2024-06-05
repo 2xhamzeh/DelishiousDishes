@@ -1,17 +1,18 @@
-// this file creates fake data for development purposes, to run just do node seed.js
+// This file creates fake data for development purposes. To run, just do `node seed.js`
 
-// connect to database with mongoose
+// Connect to database with mongoose
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/recipe_db");
 const db = mongoose.connection;
 db.on("error", () => console.log("Connection to DB failed!"));
-db.once("open", () => console.log("connected to DB"));
+db.once("open", () => console.log("Connected to DB"));
 
-// import models
+// Import models
 const Recipe = require("./models/recipe");
 const User = require("./models/user");
+const Post = require("./models/Post");
 
-// the recipes we want to add
+// The recipes we want to add
 const recipes = [
   {
     name: "Fettuccine Alfredo",
@@ -35,11 +36,11 @@ const recipes = [
   },
 ];
 
-// the users to add
+// The users to add
 const users = [
   {
     username: "admin",
-    password: "admin",
+    password: "admin123",  // Updated to meet the minimum length requirement
   },
   {
     username: "user123",
@@ -51,33 +52,66 @@ const users = [
   },
 ];
 
+// The posts we added
+const posts = [
+  {
+    title: "First Post",
+    content: "This is the content of the first post.",
+  },
+  {
+    title: "Second Post",
+    content: "This is the content of the second post.",
+  },
+  {
+    title: "Third Post",
+    content: "This is the content of the third post.",
+  },
+];
+
 // Function to seed the database
-// not using promises like in the book, because the data is being inserted before deletion is finished
-// to do the following with promises, we'd need lots of chaining
-// its good to also learn this async() await syntax, its a different way to use promises
 const seedDatabase = async () => {
   try {
-    // delete all current recipe data
+    // Delete all current recipe data
     await Recipe.deleteMany();
     console.log("Recipe data deleted!");
 
-    // delete all current user data
+    // Delete all current user data
     await User.deleteMany();
     console.log("User data deleted!");
 
-    // create new recipes
+    // Delete all current post data
+    await Post.deleteMany();
+    console.log("Post data deleted!");
+
+    // Create new recipes
     await Recipe.create(recipes);
     console.log("Recipes created!");
 
-    // create new users
-    await User.create(users);
+    // Creating new users and associating posts with them
+    const createdUsers = await User.create(users);
     console.log("Users created!");
 
-    // close the connection
+    // Creating new posts and associating them with users
+    for (let i = 0; i < posts.length; i++) {
+      // Assign each post to a user 
+      const user = createdUsers[i % createdUsers.length];
+      const post = new Post({
+        title: posts[i].title,
+        content: posts[i].content,
+        author: user._id
+      });
+      await post.save();
+      user.posts.push(post._id);
+      await user.save();
+    }
+    console.log("Posts created and associated with users!");
+
+    // Close the connection
     mongoose.connection.close();
     console.log("Database connection closed.");
   } catch (error) {
     console.error(error);
+    mongoose.connection.close();
   }
 };
 
