@@ -1,28 +1,30 @@
 // import user model
 const User = require("../models/user");
 
-exports.getAllUsers = (req, res) => {
-  User.find({})
-    .exec()
-    .then((users) => {
-      res.send(users);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
+module.exports = {
+  getAllUsers: (req, res) => {
+    User.find({})
+      .exec()
+      .then((users) => {
+        res.send(users);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  },
 
-exports.signup = (req, res) => {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password,
-  });
-  user
-    .save()
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => console.log(error));
+  signup: (req, res) => {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    user
+      .save()
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((error) => console.log(error));
+  },
 };
 
 // old code for reference

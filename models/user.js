@@ -24,9 +24,5 @@ const userSchema = mongoose.Schema({
   ],
 });
 
-userSchema.methods.getUserRecipes = function () {
-  // code to return recipes of this person
-};
-
 // then export the model so we can use it in the controller
 module.exports = mongoose.model("User", userSchema);
