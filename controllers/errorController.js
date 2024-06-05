@@ -9,12 +9,13 @@ module.exports = {
   },
 
   // responds with internal error code
-  respondInternalError: (error, req, res, next) => {
-    let errorCode = httpStatus.StatusCodes.INTERNAL_SERVER_ERROR;
-    res.status(errorCode);
-    res.send(
-      `${errorCode} | Sorry, our application is experiencing a problem!`
-    );
+  respondInternalError: (error, req, res) => {
+    //let errorCode = httpStatus.StatusCodes.INTERNAL_SERVER_ERROR;
+    // res.status(errorCode);
+    // res.send(
+    //   `${errorCode} | Sorry, our application is experiencing a problem!`
+    // );
+    res.send(error);
   },
   // logs errors to console
   logErrors: (error, req, res, next) => {

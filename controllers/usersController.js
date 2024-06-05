@@ -13,7 +13,7 @@ module.exports = {
       });
   },
 
-  signup: (req, res) => {
+  signup: (req, res, next) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
@@ -23,7 +23,7 @@ module.exports = {
       .then(() => {
         res.sendStatus(200);
       })
-      .catch((error) => console.log(error));
+      .catch(next);
   },
 };
 
