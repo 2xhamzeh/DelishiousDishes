@@ -5,7 +5,7 @@ app.use(express.json()); // this is a body parser, allows us to read body data
 // routes
 const apiRouter = require("./routes/api"); // api routes
 app.use("/api", apiRouter);
-const homeRouter = require("./routes/homeRoutes"); // home routes (index.html)
+const homeRouter = require("./routes/homeRoutes"); // home routes (index.html, for now this redirects to frontend server)
 app.use(homeRouter);
 
 // connect to database through mongoose and save connection in db if needed
@@ -18,8 +18,6 @@ db.on("error", () => console.log("Connection to DB failed!"));
 db.once("open", () => {
   console.log("Connected to MongoDB!");
 });
-// tell mongoose we want to use native ES6 promises
-mongoose.Promise = global.Promise;
 
 // using public as main directory for static content (styles, images, ...)
 app.use(express.static("public"));
