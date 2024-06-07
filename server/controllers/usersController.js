@@ -5,6 +5,7 @@ module.exports = {
   readAll: (req, res, next) => {
     // TODO: change so passwords aren't sent back
     User.find({})
+      .select("-password")
       .exec()
       .then((users) => {
         res.send(users);
