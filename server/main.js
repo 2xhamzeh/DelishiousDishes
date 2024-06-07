@@ -8,16 +8,14 @@ app.use("/api", apiRouter);
 const homeRouter = require("./routes/homeRoutes"); // home routes (index.html, for now this redirects to frontend server)
 app.use(homeRouter);
 
-// connect to database through mongoose and save connection in db if needed
+// connect to database through mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/dish_db");
-const db = mongoose.connection;
-// in case connection fails
-db.on("error", () => console.log("Connection to DB failed!"));
-// once connected to database, run once.
-db.once("open", () => {
-  console.log("Connected to MongoDB!");
-});
+mongoose
+  .connect("mongodb://localhost:27017/dish_db")
+  .then(() => {
+    console.log("Connected to MongoDB!");
+  })
+  .catch((error) => console.log(`Connection to DB failed! ${error}`));
 
 // using public as main directory for static content (styles, images, ...)
 app.use(express.static("public"));
