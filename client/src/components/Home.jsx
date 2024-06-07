@@ -10,7 +10,7 @@ const HomeBody = () => {
           The perfect place to find and share recipes
         </h2>
       </div>
-      <div className="flex flex-auto justify-evenly px-20 font-medium text-lg text-center">
+      <div className="flex flex-auto gap-4 justify-evenly px-20 font-medium text-lg text-center">
         <Link to="/dishes">
           <h3>Dishes</h3>
           <img

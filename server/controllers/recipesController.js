@@ -7,7 +7,7 @@ const Recipe = require("../models/recipe");
 
 module.exports = {
   // sends all recipes available
-  getAllRecipes: (req, res, next) => {
+  readAll: (req, res, next) => {
     Recipe.find({})
       .exec()
       .then((recipes) => {
@@ -17,7 +17,7 @@ module.exports = {
   },
 
   // adds a single recipe to database
-  addRecipe: (req, res, next) => {
+  create: (req, res, next) => {
     const recipe = new Recipe({
       name: req.body.name,
       ingredients: req.body.ingredients,
@@ -29,5 +29,14 @@ module.exports = {
         res.sendStatus(200);
       })
       .catch(next);
+  },
+  read: (req, res, next) => {
+    // code to read/get dish
+  },
+  update: (req, res, next) => {
+    // code to update/edit dish info
+  },
+  delete: (req, res, next) => {
+    // code to delete dish
   },
 };

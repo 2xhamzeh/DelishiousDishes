@@ -2,7 +2,8 @@
 const User = require("../models/user");
 
 module.exports = {
-  getAllUsers: (req, res, next) => {
+  readAll: (req, res, next) => {
+    // TODO: change so passwords aren't sent back
     User.find({})
       .exec()
       .then((users) => {
@@ -10,8 +11,7 @@ module.exports = {
       })
       .catch(next);
   },
-
-  signup: (req, res, next) => {
+  create: (req, res, next) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
@@ -23,32 +23,13 @@ module.exports = {
       })
       .catch(next);
   },
+  read: (req, res, next) => {
+    // code to read/get user
+  },
+  update: (req, res, next) => {
+    // code to update/edit user info
+  },
+  delete: (req, res, next) => {
+    // code to delete user
+  },
 };
-
-// old code for reference
-// exports.sendUserProfile = (req, res) => {
-//   // this code is to be replaced once we have user profiles and a data base
-//   // instead of sending a text we should send a page that displays the users' profile
-//   let id = req.params.id;
-//   res.send(`This is the profile for the user with the ID ${id}`);
-// };
-
-// exports.userSignUpProcessor = (req, res) => {
-//   // this code is to be replaced once we have user profiles and a data base
-//   // instead of sending a text we should send a page that displays the users' profile
-//   console.log(req.body);
-//   res.send("Sign-up Successful!");
-// };
-
-// // passing content from the controller to the view and displaying it with a view template
-// exports.respondWithName = (req, res) => {
-//   let paramsName = req.params.myName;
-//   res.render("index", { name: paramsName });
-// };
-
-// exports.respondWithContactInfo = (req, res) => {
-//   res.render("contact", {
-//     email: "cuisinefire@gmail.com",
-//     phone: "01734450128",
-//   });
-// };
