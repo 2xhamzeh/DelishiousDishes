@@ -10,7 +10,7 @@ app.use(homeRouter);
 
 // connect to database through mongoose and save connection in db if needed
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/recipe_db");
+mongoose.connect("mongodb://localhost:27017/dish_db");
 const db = mongoose.connection;
 // in case connection fails
 db.on("error", () => console.log("Connection to DB failed!"));

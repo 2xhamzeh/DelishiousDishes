@@ -6,7 +6,7 @@ const Dishes = () => {
   useEffect(() => {
     const getDishData = async () => {
       try {
-        const response = await fetch("/api/recipes/", {
+        const response = await fetch("/api/dishes/", {
           method: "GET",
         });
         const data = await response.json();

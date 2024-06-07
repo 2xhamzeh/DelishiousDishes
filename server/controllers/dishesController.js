@@ -1,5 +1,5 @@
 // here we import the model
-const Recipe = require("../models/recipe");
+const Dish = require("../models/dish");
 
 // and we can write down all the operations we want to do with it.
 // we use exports.functionName to so we can use the functions where needed
@@ -8,22 +8,22 @@ const Recipe = require("../models/recipe");
 module.exports = {
   // sends all recipes available
   readAll: (req, res, next) => {
-    Recipe.find({})
+    Dish.find({})
       .exec()
-      .then((recipes) => {
-        res.send(recipes);
+      .then((dishes) => {
+        res.send(dishes);
       })
       .catch(next);
   },
 
   // adds a single recipe to database
   create: (req, res, next) => {
-    const recipe = new Recipe({
+    const dish = new Dish({
       name: req.body.name,
       ingredients: req.body.ingredients,
       instructions: req.body.instructions,
     });
-    recipe
+    dish
       .save()
       .then(() => {
         res.sendStatus(200);

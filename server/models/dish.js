@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // no need to create a connection, we just want to create a schema and export a model
 
 // create the schema
-const recipeSchema = mongoose.Schema({
+const dishSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -28,7 +28,7 @@ const recipeSchema = mongoose.Schema({
 });
 
 // then export the model so we can use it in the controller
-module.exports = mongoose.model("Recipe", recipeSchema);
+module.exports = mongoose.model("Dish", dishSchema);
 
 //note: we use module.exports = sth.. when we want to export a single function
 // we use exports.functionName()... when we want to export many functions

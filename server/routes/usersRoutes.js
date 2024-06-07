@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/usersController");
+const usersController = require("../controllers/usersController");
 
 // routes here will have /users before them
 
-router.get("/", userController.readAll);
-router.post("/", userController.create);
+router.get("/", usersController.readAll);
+router.post("/", usersController.create);
 
 module.exports = router;

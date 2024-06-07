@@ -16,10 +16,10 @@ const userSchema = mongoose.Schema({
     minlength: 6,
   },
   // Adding an array to store references to another model
-  recipes: [
+  dishes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Recipe",
+      ref: "Dish",
     },
   ],
 });
