@@ -10,16 +10,12 @@ const dishSchema = mongoose.Schema({
   },
   // ingredients and instructions should be string arrays like this: [String]
   // keeping them normal strings for now for simplicity
-  ingredients: [
-    {
-      type: String,
-    },
-  ],
-  instructions: [
-    {
-      type: String,
-    },
-  ],
+  ingredients: {
+    type: String,
+  },
+  instructions: {
+    type: String,
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
