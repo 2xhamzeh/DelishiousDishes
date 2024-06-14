@@ -7,6 +7,8 @@ const db = mongoose.connection;
 db.on("error", () => console.log("Connection to DB failed!"));
 db.once("open", () => console.log("Connected to DB"));
 
+const passport = require("passport");
+
 // Import models
 const Dish = require("./models/dish");
 const User = require("./models/user");
@@ -62,8 +64,15 @@ const seedDatabase = async () => {
     await User.deleteMany();
     console.log("User data deleted!");
 
-    // Creating new users and associating dishes with them
-    const createdUsers = await User.create(users);
+    // Creating new users
+    const createdUsers = [];
+    for (const user of users) {
+      const registeredUser = await User.register(
+        new User({ username: user.username }),
+        user.password
+      );
+      createdUsers.push(registeredUser);
+    }
     console.log("Users created!");
 
     // Creating new dishes and associating them with users

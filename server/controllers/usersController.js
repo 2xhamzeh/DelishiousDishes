@@ -1,34 +1,41 @@
 // import user model
 const User = require("../models/user");
+const passport = require("passport");
 
 module.exports = {
   authenticate: (req, res, next) => {
-    User.findOne({ username: req.body.username })
-      .then((user) => {
-        if (user) {
-          user.passwordComparison(req.body.password).then((passwordMatch) => {
-            if (passwordMatch) {
-              // if user is found and password is correct
-              res.send({ message: "User authenticated!", user: user });
-            } else {
-              // if password is incorrect
-              const err = new Error("Password incorrect!");
-              err.status = 401;
-              next(err);
-            }
-          });
-        } else {
-          // if user doesn't exist
-          const err = new Error("User not found!");
-          err.status = 404;
-          next(err);
+    passport.authenticate("local", (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        const error = new Error("Username or password incorrect");
+        error.status = 401;
+        return next(error);
+      }
+      // this creates a session and triggers serialization. It also attached the user to req.user
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
         }
-      })
-      .catch(next);
+        // If authentication succeeds, return user object without password
+        res.send({ message: "User authenticated!", user: req.user });
+      });
+    })(req, res, next);
+  },
+
+  logout: (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+    });
+    res.send("User logged out");
   },
 
   readAll: (req, res, next) => {
-    // TODO: change so passwords aren't sent back
+    console.log(req.isAuthenticated());
+    // Adjust to not send passwords back
     User.find({})
       .exec()
       .then((users) => {
@@ -36,18 +43,21 @@ module.exports = {
       })
       .catch(next);
   },
+
   create: (req, res, next) => {
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-    });
-    user
-      .save()
-      .then(() => {
+    // Creating a new user with passport-local-mongoose
+    User.register(
+      new User({ username: req.body.username }),
+      req.body.password,
+      (err, user) => {
+        if (err) {
+          return next(err);
+        }
         res.sendStatus(200);
-      })
-      .catch(next);
+      }
+    );
   },
+
   read: (req, res, next) => {
     // code to read/get user
   },

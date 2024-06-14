@@ -2,9 +2,30 @@ const express = require("express");
 const app = express();
 
 const expressSession = require("express-session");
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser"); // we don't need this for now, cause express-session handles its own cookies
+const passport = require("passport");
 
 app.use(express.json()); // this is a body parser, allows us to read body data
+
+// setting up passport
+app.use(
+  expressSession({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      // this determines how long the user will be authenticated for/how long the session lasts
+      maxAge: 3600000, //1 hour
+      //maxAge: 60000, // 1 minute
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+const User = require("./models/user");
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // routes
 const apiRouter = require("./routes/api"); // api routes
