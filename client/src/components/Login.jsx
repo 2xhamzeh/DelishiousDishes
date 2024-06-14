@@ -19,10 +19,33 @@ const Login = () => {
   };
 
   const handleSubmit = () => {
-    console.log(formData);
     // TODO:
     // - check if input is valid
     // submit using fetch POST
+    const login = async () => {
+      try {
+        const response = await fetch("/api/users/authenticate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password,
+          }),
+        });
+        if (response.status === 200) {
+          // code to navigate to user profile
+        } else if (response.status === 404) {
+          // code if user not found
+        } else if (response.status === 401) {
+          // code if password is incorrect
+        }
+      } catch (error) {
+        //console.log(error);
+      }
+    };
+    login();
   };
 
   return (

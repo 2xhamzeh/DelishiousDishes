@@ -2,10 +2,34 @@
 const User = require("../models/user");
 
 module.exports = {
+  authenticate: (req, res, next) => {
+    User.findOne({ username: req.body.username })
+      .then((user) => {
+        if (user) {
+          user.passwordComparison(req.body.password).then((passwordMatch) => {
+            if (passwordMatch) {
+              // if user is found and password is correct
+              res.send({ message: "User authenticated!", user: user });
+            } else {
+              // if password is incorrect
+              const err = new Error("Password incorrect!");
+              err.status = 401;
+              next(err);
+            }
+          });
+        } else {
+          // if user doesn't exist
+          const err = new Error("User not found!");
+          err.status = 404;
+          next(err);
+        }
+      })
+      .catch(next);
+  },
+
   readAll: (req, res, next) => {
     // TODO: change so passwords aren't sent back
     User.find({})
-      .select("-password")
       .exec()
       .then((users) => {
         res.send(users);

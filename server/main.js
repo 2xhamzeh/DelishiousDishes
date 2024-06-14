@@ -1,5 +1,9 @@
 const express = require("express");
 const app = express();
+
+const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
+
 app.use(express.json()); // this is a body parser, allows us to read body data
 
 // routes
