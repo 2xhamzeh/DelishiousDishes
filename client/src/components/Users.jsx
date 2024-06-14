@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const [users, setUsers] = useState();
@@ -25,8 +26,7 @@ const Users = () => {
       {users?.map((user) => (
         <div key={user._id}>
           <p>Username: {user.username}</p>
-          <p>Password: {user.password}</p>
-          <p>Dish: {user.dish}</p>
+          <Link to={`/users/${user._id}`}>View Details</Link>
         </div>
       ))}
     </div>
