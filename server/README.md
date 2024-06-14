@@ -1,29 +1,20 @@
-# AgileWebDevProject
+## Server Setup
 
-Project for our Web Technology: Agile Web Development course at university.
-Marwa
-Truc
-Hamzeh
+The server for this project is built with Express.js and uses MongoDB as the database.
 
-
-## Starting the Server
-
-To start the server, follow these steps:
+### Starting the Server
 
 1. Open your terminal.
 2. Navigate to the project directory using the `cd` command.
 3. Once you're in the project directory, navigate to the server directory: `cd server`
 4. Start the server by running the command: `node main`
 
+You should see a message saying "Connected to MongoDB!" This means the server has started successfully and is connected to the database.
 
-## Starting the Client
+### Viewing the Database
 
-To start the client, follow these steps:
+You can view the database using MongoDB Compass. To do this, connect MongoDB Compass to your MongoDB server and select the database ('dish_db') for this project.
 
-1. Open your terminal.
-2. Navigate to the project directory using the `cd` command.
-3. Once you're in the project directory, navigate to the client directory: `cd client`
-4. Install the necessary packages by running the command: `npm install`
-5. After the installation is complete, start the client by running the command: `npm run dev`
+### Populating the Database
 
-You should see a message saying "VITE v5.2.11 ready in 2494 ms" and a local URL. This means the client has started successfully and is running on your local machine.
+You can populate the database by running the `node seed` command in the server directory. This will fill the database with initial data for testing and development purposes.
