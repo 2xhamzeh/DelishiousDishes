@@ -51,6 +51,22 @@ const users = [
     username: "TheRandomUser",
     password: "mehaha",
   },
+  {
+    username: "TheRandomUser2",
+    password: "mehaha",
+  },
+  {
+    username: "TheRandomUser3",
+    password: "mehaha",
+  },
+  {
+    username: "TheRandomUser4",
+    password: "mehaha",
+  },
+  {
+    username: "TheRandomUser5",
+    password: "mehaha",
+  },
 ];
 
 // Function to seed the database
