@@ -18,7 +18,18 @@ const Dishes = () => {
     getDishData();
   }, []);
 
-  return <div>{JSON.stringify(dishes)}</div>;
+  return (
+    <div>
+      <div>{JSON.stringify(dishes)}</div>
+
+      {dishes?.map((dish) => (
+        <div key={dish._id}>
+          <p>Name: {dish.name}</p>
+          <p>By: {dish.author}</p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Dishes;

@@ -30,6 +30,9 @@ module.exports = {
     var userId = req.params.id;
     User.findById(userId)
       .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
         res.send(user);
       })
       .catch(next);
