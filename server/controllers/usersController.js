@@ -2,6 +2,7 @@
 const User = require("../models/user");
 
 module.exports = {
+  // returns all users in the database
   readAll: (req, res, next) => {
     // TODO: change so passwords aren't sent back
     User.find({})
@@ -24,13 +25,35 @@ module.exports = {
       })
       .catch(next);
   },
+  // returns a single user that matches the provided ID
   read: (req, res, next) => {
-    // code to read/get user
+    var userId = req.params.id;
+    User.findById(userId)
+      .then((user) => {
+        res.send(user);
+      })
+      .catch(next);
   },
   update: (req, res, next) => {
-    // code to update/edit user info
+    var userId = req.params.id;
+    User.findByIdAndUpdate(userId, req.body, { new: true })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
+        res.send(user);
+      })
+      .catch(next);
   },
   delete: (req, res, next) => {
-    // code to delete user
+    var userId = req.params.id;
+    User.findByIdAndDelete(userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
+        res.send(user);
+      })
+      .catch(next);
   },
 };
