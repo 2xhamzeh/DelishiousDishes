@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   // stores form state
   const [formData, setFormData] = useState({
     username: "",
@@ -36,10 +39,10 @@ const Login = () => {
         });
         if (response.status === 200) {
           // code to navigate to user profile
-        } else if (response.status === 404) {
-          // code if user not found
-        } else if (response.status === 401) {
-          // code if password is incorrect
+          const data = await response.json();
+          navigate(`/users/${data.user.id}`);
+        } else {
+          // code to show error message
         }
       } catch (error) {
         //console.log(error);

@@ -7,6 +7,7 @@ import Help from "./components/Help";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Profile from "./components/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "users",
         element: <Users />,
+      },
+      {
+        path: "users/:userId",
+        element: <Profile />,
       },
       {
         path: "help",

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   // stores form state
   const [formData, setFormData] = useState({
     username: "",
@@ -25,7 +26,6 @@ const Signup = () => {
     // submit using fetch POST
     const register = async () => {
       try {
-        console.log(formData);
         const response = await fetch("/api/users/", {
           method: "POST",
           headers: {
@@ -36,8 +36,13 @@ const Signup = () => {
             password: formData.password,
           }),
         });
-        console.log("called");
-        console.log(response.status);
+        if (response.status === 200) {
+          // code to navigate to user profile
+          const data = await response.json();
+          navigate(`/users/${data.user.id}`);
+        } else {
+          // code to show error message
+        }
       } catch (error) {
         console.log(error);
       }

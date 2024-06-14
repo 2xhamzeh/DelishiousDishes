@@ -19,7 +19,10 @@ module.exports = {
           return next(err);
         }
         // If authentication succeeds, return user object without password
-        res.send({ message: "User authenticated!", user: req.user });
+        res.send({
+          message: "User authenticated!",
+          user: { id: user.id, username: user.username },
+        });
       });
     })(req, res, next);
   },
@@ -53,7 +56,9 @@ module.exports = {
         if (err) {
           return next(err);
         }
-        res.sendStatus(200);
+        res
+          .status(200)
+          .send({ user: { id: user.id, username: user.username } });
       }
     );
   },
