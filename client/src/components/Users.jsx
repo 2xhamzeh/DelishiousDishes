@@ -18,7 +18,19 @@ const Users = () => {
     getUsers();
   }, []);
 
-  return <div>{JSON.stringify(users)}</div>;
+  return (
+    <div>
+      <div>{JSON.stringify(users)}</div>
+
+      {users?.map((user) => (
+        <div key={user._id}>
+          <p>Username: {user.username}</p>
+          <p>Password: {user.password}</p>
+          <p>Dish: {user.dish}</p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Users;
