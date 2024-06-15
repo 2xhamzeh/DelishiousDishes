@@ -8,6 +8,7 @@ import Signup from "./components/Signup";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import Dish from "./components/Dish";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "dishes",
         element: <Dishes />,
+      },
+      {
+        path: "dish",
+        element: <Dish />,
       },
       {
         path: "users",

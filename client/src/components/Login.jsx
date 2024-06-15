@@ -41,7 +41,7 @@ const Login = () => {
           // code to navigate to user profile
           const data = await response.json();
           navigate(`/users/${data.user.id}`);
-        } else {
+        } else if(response.status === 404) {
           // code to show error message
         }
       } catch (error) {

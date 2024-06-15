@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DishCard from "./DishCard";
 
 const Dishes = () => {
   const [dishes, setDishes] = useState();
@@ -18,7 +19,22 @@ const Dishes = () => {
     getDishData();
   }, []);
 
-  return <div>{JSON.stringify(dishes)}</div>;
+  return (
+    <div>
+      <h1 className="text-center font-bold text-3xl mt-8 mb-10">All Dishes</h1>
+      <div className="flex flex-wrap justify-center">
+        {dishes &&
+          dishes.map((dish) => (
+            <DishCard
+              key={dish._id}
+              id={dish._id}
+              name={dish.name}
+              img={dish.img}
+            />
+          ))}
+      </div>
+    </div>
+  );
 };
 
 export default Dishes;
