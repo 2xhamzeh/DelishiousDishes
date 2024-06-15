@@ -38,18 +38,13 @@ module.exports = {
 
   readAll: (req, res, next) => {
     console.log(req.isAuthenticated());
-    // Adjust to not send passwords back
-    // returns all users in the database
-    readAll: (req, res, next) => {
-      console.log("GET /api/users/ - readAll"); // Log request
-      // TODO: change so passwords aren't sent back
-      User.find({})
-        .exec()
-        .then((users) => {
-          res.send(users);
-        })
-        .catch(next);
-    };
+    // TODO: change so passwords aren't sent back
+    User.find({})
+      .exec()
+      .then((users) => {
+        res.send(users);
+      })
+      .catch(next);
   },
 
   create: (req, res, next) => {
