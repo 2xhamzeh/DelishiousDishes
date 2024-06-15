@@ -30,13 +30,38 @@ module.exports = {
       })
       .catch(next);
   },
+  // returns a single dish that matches the provided ID
   read: (req, res, next) => {
-    // code to read/get dish
+    var dishId = req.params.id;
+    Dish.findById(dishId)
+      .then((dish) => {
+        if (!dish) {
+          return res.sendStatus(404);
+        }
+        res.send(dish);
+      })
+      .catch(next);
   },
   update: (req, res, next) => {
-    // code to update/edit dish info
+    var dishId = req.params.id;
+    Dish.findByIdAndUpdate(dishId, req.body, { new: true })
+      .then((dish) => {
+        if (!dish) {
+          return res.status(404).send();
+        }
+        res.send(dish);
+      })
+      .catch(next);
   },
   delete: (req, res, next) => {
-    // code to delete dish
+    var dishId = req.params.id;
+    Dish.findByIdAndDelete(dishId)
+      .then((dish) => {
+        if (!dish) {
+          return res.status(404).send();
+        }
+        res.send(dish);
+      })
+      .catch(next);
   },
 };

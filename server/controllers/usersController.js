@@ -39,12 +39,17 @@ module.exports = {
   readAll: (req, res, next) => {
     console.log(req.isAuthenticated());
     // Adjust to not send passwords back
-    User.find({})
-      .exec()
-      .then((users) => {
-        res.send(users);
-      })
-      .catch(next);
+    // returns all users in the database
+    readAll: (req, res, next) => {
+      console.log("GET /api/users/ - readAll"); // Log request
+      // TODO: change so passwords aren't sent back
+      User.find({})
+        .exec()
+        .then((users) => {
+          res.send(users);
+        })
+        .catch(next);
+    };
   },
 
   create: (req, res, next) => {
@@ -62,14 +67,38 @@ module.exports = {
       }
     );
   },
-
+  // returns a single user that matches the provided ID
   read: (req, res, next) => {
-    // code to read/get user
+    var userId = req.params.id;
+    User.findById(userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
+        res.send(user);
+      })
+      .catch(next);
   },
   update: (req, res, next) => {
-    // code to update/edit user info
+    var userId = req.params.id;
+    User.findByIdAndUpdate(userId, req.body, { new: true })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
+        res.send(user);
+      })
+      .catch(next);
   },
   delete: (req, res, next) => {
-    // code to delete user
+    var userId = req.params.id;
+    User.findByIdAndDelete(userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send();
+        }
+        res.send(user);
+      })
+      .catch(next);
   },
 };

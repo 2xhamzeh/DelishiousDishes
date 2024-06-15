@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 
 const Users = () => {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const getUsers = async () => {
