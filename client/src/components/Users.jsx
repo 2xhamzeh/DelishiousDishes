@@ -22,7 +22,7 @@ const Users = () => {
   return (
     <div>
       <h1 className="text-center font-bold text-3xl mt-8 mb-10">People</h1>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center gap-8 mx-8">
         {users &&
           users.map((user) => {
             return (

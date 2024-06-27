@@ -22,7 +22,7 @@ const Dishes = () => {
   return (
     <div>
       <h1 className="text-center font-bold text-3xl mt-8 mb-10">All Dishes</h1>
-      <div className="flex flex-wrap justify-center">
+      <div className="mx-8 flex flex-wrap gap-8 justify-center">
         {dishes &&
           dishes.map((dish) => (
             <DishCard

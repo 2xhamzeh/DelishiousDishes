@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Dish from "./components/Dish";
+import User from "./components/User";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "users/:userId",
-        element: <Profile />,
+        element: <User />,
       },
       {
         path: "help",
