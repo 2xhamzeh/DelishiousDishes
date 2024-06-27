@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import FormInput from "./FormInput";
-import SubmitButton from "./SubmitButton";
+import Button from "./Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../store/useAuth";
 
 const Login = () => {
+  const authStoreLogin = useAuth((state) => state.login);
   const navigate = useNavigate();
 
   // stores form state
@@ -41,7 +43,8 @@ const Login = () => {
           // code to navigate to user profile
           const data = await response.json();
           navigate(`/users/${data.user.id}`);
-        } else if(response.status === 404) {
+          authStoreLogin();
+        } else if (response.status === 404) {
           // code to show error message
         }
       } catch (error) {
@@ -78,7 +81,7 @@ const Login = () => {
           onChange={handleChange}
           iconSrc="/icons/lock.svg"
         />
-        <SubmitButton text="Log in" onClick={handleSubmit} />
+        <Button text="Log in" onClick={handleSubmit} />
         <span className="text-center font-light">
           No account yet?{" "}
           <Link to="/signup" className=" font-medium text-c4">

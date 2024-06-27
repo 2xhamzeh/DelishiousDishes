@@ -1,24 +1,11 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import DishCard from "./DishCard";
-import SubmitButton from "./SubmitButton";
+import Button from "./Button";
 
-const DishProfileList = ({ name, icon }) => {
-  const [dishes, setDishes] = useState();
+const DishProfileList = ({ dishes, name, icon }) => {
   useEffect(() => {
-    const getDishData = async () => {
-      try {
-        const response = await fetch("/api/dishes/", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setDishes(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getDishData();
-  }, []);
+    console.log(dishes);
+  }, [dishes]);
   return (
     <div className="">
       <div className="flex items-center my-1">
@@ -39,7 +26,7 @@ const DishProfileList = ({ name, icon }) => {
             ))}
         {dishes && dishes.length >= 4 && (
           <div className="m-2 bg-c3 w-60 h-60 flex justify-center items-center mb-12 border">
-            <SubmitButton text={"More"} onClick={() => {}} />
+            <Button text={"More"} onClick={() => {}} />
           </div>
         )}
       </div>

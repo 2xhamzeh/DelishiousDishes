@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../store/useAuth";
+import Button from "./Button";
 
 const Header = () => {
   const isAuthenticated = useAuth((state) => state.isAuthenticated);
@@ -21,6 +22,13 @@ const Header = () => {
           <li>
             <Link to="/help">Help</Link>
           </li>
+          {isAuthenticated && (
+            <li>
+              <button className="bg-c1 border drop-shadow p-2 rounded-full h-8 flex items-center">
+                CREATE
+              </button>
+            </li>
+          )}
           <li>
             <Link className="flex items-center" to="/login">
               <span>Pr</span>
