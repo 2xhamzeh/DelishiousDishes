@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
         element: <Dishes />,
       },
       {
-        path: "dish",
+        path: "dishes/:dishId",
         element: <Dish />,
       },
       {
