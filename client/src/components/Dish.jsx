@@ -28,7 +28,7 @@ const Dish = () => {
     };
     getDish();
   }, []);
-  
+
   // fake data for testing
   const dish = {
     name: "Fettuccine Alfredo",

@@ -10,11 +10,13 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Dish from "./components/Dish";
 import User from "./components/User";
+import Error from "./components/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <Root />,
     children: [
       {
         index: true,
