@@ -4,6 +4,8 @@
   "description": "A recipes website",
   "main": "main.js",
   "scripts": {
+    "start": "node main.js",
+    "seed": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hamzeh, Truc, Marwa",
@@ -15,8 +17,9 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
-    "mongoose": "^8.3.4",
+    "mongoose": "^8.4.4",
     "passport": "^0.7.0",
     "passport-local-mongoose": "^8.0.0"
   }
