@@ -1,30 +1,18 @@
-// for a model we require mongoose
 const mongoose = require("mongoose");
-// no need to create a connection, we just want to create a schema and export a model
 
-// create the schema
-const dishSchema = mongoose.Schema({
+const dishSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Path `name` is required."],
   },
-  // ingredients and instructions should be string arrays like this: [String]
-  // keeping them normal strings for now for simplicity
-  ingredients: {
-    type: String,
-  },
-  instructions: {
-    type: String,
-  },
+  ingredients: String,
+  instructions: String,
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
 });
 
-// then export the model so we can use it in the controller
-module.exports = mongoose.model("Dish", dishSchema);
+const Dish = mongoose.model("Dish", dishSchema);
 
-//note: we use module.exports = sth.. when we want to export a single function
-// we use exports.functionName()... when we want to export many functions
+module.exports = Dish;

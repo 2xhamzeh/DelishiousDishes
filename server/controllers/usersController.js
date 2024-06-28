@@ -1,27 +1,28 @@
-// import user model
 const User = require("../models/user");
 const passport = require("passport");
+const jwtAuth = require("../middleware/jwtAuth");
 
 module.exports = {
   authenticate: (req, res, next) => {
-    passport.authenticate("local", (err, user) => {
+    passport.authenticate("local", (err, user, info) => {
       if (err) {
+        console.log("Error during authentication:", err);
         return next(err);
       }
       if (!user) {
-        const error = new Error("Username or password incorrect");
-        error.status = 401;
-        return next(error);
+        console.log("Authentication failed. User not found.");
+        return res.status(401).send({ message: "Unauthorized" });
       }
-      // this creates a session and triggers serialization. It also attached the user to req.user
       req.logIn(user, (err) => {
         if (err) {
+          console.log("Error during login:", err);
           return next(err);
         }
-        // If authentication succeeds, return user object without password
+        const token = jwtAuth.generateToken(user);
         res.send({
           message: "User authenticated!",
           user: { id: user.id, username: user.username },
+          token: token,
         });
       });
     })(req, res, next);
@@ -32,13 +33,11 @@ module.exports = {
       if (err) {
         return next(err);
       }
+      res.send("User logged out");
     });
-    res.send("User logged out");
   },
 
   readAll: (req, res, next) => {
-    console.log(req.isAuthenticated());
-    // TODO: change so passwords aren't sent back
     User.find({})
       .exec()
       .then((users) => {
@@ -48,7 +47,6 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    // Creating a new user with passport-local-mongoose
     User.register(
       new User({ username: req.body.username }),
       req.body.password,
@@ -56,13 +54,11 @@ module.exports = {
         if (err) {
           return next(err);
         }
-        res
-          .status(200)
-          .send({ user: { id: user.id, username: user.username } });
+        res.status(200).send({ user: { id: user.id, username: user.username } });
       }
     );
   },
-  // returns a single user that matches the provided ID
+
   read: (req, res, next) => {
     var userId = req.params.id;
     User.findById(userId)
@@ -74,6 +70,7 @@ module.exports = {
       })
       .catch(next);
   },
+
   update: (req, res, next) => {
     var userId = req.params.id;
     User.findByIdAndUpdate(userId, req.body, { new: true })
@@ -85,6 +82,7 @@ module.exports = {
       })
       .catch(next);
   },
+
   delete: (req, res, next) => {
     var userId = req.params.id;
     User.findByIdAndDelete(userId)

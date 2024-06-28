@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const dishesController = require("../controllers/dishesController");
+const { verifyToken } = require("../middleware/jwtAuth");
 
-router.get("/", dishesController.readAll); // gets all dishes
-router.post("/", dishesController.create); // create a new dish
-router.get("/:id", dishesController.read); // gets a specific dish
-router.put("/:id", dishesController.update); // updates a specific dish
-router.delete("/:id", dishesController.delete); // deletes a specific dish
+router.get("/", verifyToken, dishesController.readAll);
+router.post("/", verifyToken, dishesController.create);
+router.get("/:id", verifyToken, dishesController.read);
+router.put("/:id", verifyToken, dishesController.update);
+router.delete("/:id", verifyToken, dishesController.delete);
 
 module.exports = router;

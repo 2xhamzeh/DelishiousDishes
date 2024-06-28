@@ -41,7 +41,7 @@ const dishes = [
 const users = [
   {
     username: "admin",
-    password: "admin123", // Updated to meet the minimum length requirement
+    password: "admin123",
   },
   {
     username: "user123",
