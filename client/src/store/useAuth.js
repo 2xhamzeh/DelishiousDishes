@@ -7,9 +7,22 @@ const useAuth = create((set) => ({
     localStorage.setItem("isAuthenticated", "true");
     set({ isAuthenticated: true });
   },
-  logout: () => {
-    localStorage.removeItem("isAuthenticated");
-    set({ isAuthenticated: false });
+  logout: async () => {
+    try {
+      const response = await fetch("/api/users/logout", {
+        method: "POST",
+        //credentials: "include", // Ensure cookies are included
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("isAuthenticated");
+        set({ isAuthenticated: false });
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   },
 }));
 
