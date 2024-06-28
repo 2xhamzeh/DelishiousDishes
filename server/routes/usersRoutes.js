@@ -5,9 +5,9 @@ const { verifyToken } = require("../middleware/jwtAuth");
 
 router.post("/authenticate", usersController.authenticate);
 router.post("/logout", verifyToken, usersController.logout);
-router.get("/", verifyToken, usersController.readAll);
+router.get("/", usersController.readAll);
 router.post("/", usersController.create);
-router.get("/:id", verifyToken, usersController.read);
+router.get("/:id", usersController.read);
 router.put("/:id", verifyToken, usersController.update);
 router.delete("/:id", verifyToken, usersController.delete);
 

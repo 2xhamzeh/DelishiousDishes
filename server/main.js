@@ -1,32 +1,22 @@
 const express = require("express");
 const app = express();
-const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
-const errorController = require('./controllers/errorController');
+const errorController = require("./controllers/errorController");
 
 const User = require("./models/user");
 const apiRouter = require("./routes/api");
 const homeRouter = require("./routes/homeRoutes");
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
+// The lines above are old dated, they can be replaced by the following line without requiring an extra module
+app.use(express.json());
+app.use(cookieParser());
 
-// Passport configuration
-app.use(
-  expressSession({
-    secret: "your_secret_key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 3600000, // 1 hour
-    },
-  })
-);
 app.use(passport.initialize());
-app.use(passport.session());
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
