@@ -12,6 +12,23 @@ const Header = () => {
     isAuthenticated ? navigate("/profile") : navigate("/login");
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/users/logout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        logout();
+        navigate("/login");
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <div className="bg-c4 flex flex-auto justify-between items-center p-2">
       <Link to="/">
@@ -44,13 +61,7 @@ const Header = () => {
           </li>
           {isAuthenticated && (
             <li>
-              <button
-                className="flex items-center"
-                onClick={() => {
-                  logout();
-                  navigate("/login");
-                }}
-              >
+              <button className="flex items-center" onClick={handleLogout}>
                 <img className="w-6 h-6" src="/icons/logout.svg" />
               </button>
             </li>

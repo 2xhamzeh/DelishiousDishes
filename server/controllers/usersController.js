@@ -13,7 +13,8 @@ module.exports = {
         console.log("Authentication failed. User not found.");
         return res.status(401).send({ message: "Unauthorized" });
       }
-      const token = jwtAuth.generateToken(user);
+      const { token, expiresIn } = jwtAuth.generateToken(user);
+      const expiryDate = new Date(Date.now() + expiresIn * 1000).toISOString();
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
@@ -22,6 +23,7 @@ module.exports = {
       res.send({
         message: "User authenticated!",
         user: { id: user.id, username: user.username },
+        tokenExpiry: expiryDate,
       });
     })(req, res, next);
   },

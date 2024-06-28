@@ -1,28 +1,45 @@
 import { create } from "zustand";
 
-// Persist state to local storage
-const useAuth = create((set) => ({
+const useAuth = create((set, get) => ({
   isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
-  login: () => {
-    localStorage.setItem("isAuthenticated", "true");
-    set({ isAuthenticated: true });
-  },
-  logout: async () => {
-    try {
-      const response = await fetch("/api/users/logout", {
-        method: "POST",
-        //credentials: "include", // Ensure cookies are included
-      });
+  tokenExpiry: localStorage.getItem("tokenExpiry"),
+  logoutTimeoutId: null,
 
-      if (response.ok) {
-        localStorage.removeItem("isAuthenticated");
-        set({ isAuthenticated: false });
-      } else {
-        console.error("Failed to log out");
+  login: (expiryDate) => {
+    if (expiryDate) {
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("tokenExpiry", expiryDate);
+      set({ isAuthenticated: true, tokenExpiry: expiryDate });
+    } else {
+      expiryDate = localStorage.getItem("tokenExpiry");
+      if (expiryDate) {
+        set({ isAuthenticated: true, tokenExpiry: expiryDate });
       }
-    } catch (error) {
-      console.error("Error logging out:", error);
     }
+
+    const expiresAt = new Date(expiryDate).getTime();
+    const currentTime = Date.now();
+    const timeout = expiresAt - currentTime;
+
+    if (timeout > 0) {
+      const timeoutId = setTimeout(() => {
+        get().logout();
+      }, timeout);
+      set({ logoutTimeoutId: timeoutId });
+    }
+  },
+
+  logout: () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("tokenExpiry");
+
+    const timeoutId = get().logoutTimeoutId;
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      set({ logoutTimeoutId: null });
+    }
+
+    set({ isAuthenticated: false, tokenExpiry: null });
   },
 }));
 

@@ -43,9 +43,9 @@ const Login = () => {
           // code to navigate to user profile
           const data = await response.json();
           navigate(`/users/${data.user.id}`);
-          authStoreLogin();
-        } else if (response.status === 404) {
-          // code to show error message
+          authStoreLogin(data.tokenExpiry);
+        } else {
+          console.log("Failed to login");
         }
       } catch (error) {
         //console.log(error);
