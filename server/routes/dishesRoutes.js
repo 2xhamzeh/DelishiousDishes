@@ -3,10 +3,10 @@ const router = express.Router();
 const dishesController = require("../controllers/dishesController");
 const { verifyToken } = require("../middleware/jwtAuth");
 
-router.get("/", verifyToken, dishesController.readAll);
-router.post("/", verifyToken, dishesController.create);
-router.get("/:id", verifyToken, dishesController.read);
-router.put("/:id", verifyToken, dishesController.update);
-router.delete("/:id", verifyToken, dishesController.delete);
+router.get("/", dishesController.readAll);
+router.post("/", dishesController.create);
+router.get("/:id", dishesController.read);
+router.put("/:id", dishesController.update);
+router.delete("/:id", dishesController.delete);
 
 module.exports = router;
