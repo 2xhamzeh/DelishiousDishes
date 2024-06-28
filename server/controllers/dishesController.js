@@ -51,7 +51,7 @@ module.exports = {
 
   update: (req, res, next) => {
     const id = req.params.id;
-    const { name, picture, time, difficulty, ingredients, instructions } = req.body;
+    const updateFields = req.body;
 
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).send({

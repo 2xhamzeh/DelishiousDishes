@@ -17,7 +17,7 @@ const User = require("./models/user");
 const dishes = [
   {
     name: "Fettuccine Alfredo",
-    picture: "path/to/fettuccine.jpg",
+    picture: "/images/dish.jpg",
     likes: 10,
     time: 30,
     difficulty: "Easy",
@@ -26,7 +26,7 @@ const dishes = [
   },
   {
     name: "Falafel",
-    picture: "path/to/falafel.jpg",
+    picture: "/images/dish.jpg",
     likes: 20,
     time: 45,
     difficulty: "Medium",
@@ -35,7 +35,7 @@ const dishes = [
   },
   {
     name: "Shawarma",
-    picture: "path/to/shawarma.jpg",
+    picture: "/images/dish.jpg",
     likes: 15,
     time: 60,
     difficulty: "Hard",
@@ -44,7 +44,7 @@ const dishes = [
   },
   {
     name: "Cheese Cake",
-    picture: "path/to/cheesecake.jpg",
+    picture: "/images/dish.jpg",
     likes: 25,
     time: 90,
     difficulty: "Medium",
@@ -53,7 +53,7 @@ const dishes = [
   },
   {
     name: "Margherita Pizza",
-    picture: "path/to/margherita.jpg",
+    picture: "/images/dish.jpg",
     likes: 30,
     time: 40,
     difficulty: "Easy",
@@ -62,7 +62,7 @@ const dishes = [
   },
   {
     name: "Pad Thai",
-    picture: "path/to/padthai.jpg",
+    picture: "/images/dish.jpg",
     likes: 40,
     time: 50,
     difficulty: "Medium",
@@ -71,7 +71,7 @@ const dishes = [
   },
   {
     name: "Tacos",
-    picture: "path/to/tacos.jpg",
+    picture: "/images/dish.jpg",
     likes: 35,
     time: 30,
     difficulty: "Easy",
@@ -80,7 +80,7 @@ const dishes = [
   },
   {
     name: "Sushi",
-    picture: "path/to/sushi.jpg",
+    picture: "/images/dish.jpg",
     likes: 50,
     time: 60,
     difficulty: "Hard",
@@ -94,7 +94,7 @@ const dishes = [
   },
   {
     name: "Chocolate Cake",
-    picture: "path/to/chocolatecake.jpg",
+    picture: "/images/dish.jpg",
     likes: 45,
     time: 90,
     difficulty: "Medium",
@@ -108,7 +108,7 @@ const dishes = [
   },
   {
     name: "Chicken Curry",
-    picture: "path/to/chickencurry.jpg",
+    picture: "/images/dish.jpg",
     likes: 55,
     time: 70,
     difficulty: "Medium",
