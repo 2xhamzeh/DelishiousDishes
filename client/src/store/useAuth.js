@@ -1,9 +1,14 @@
 import { create } from "zustand";
 
 const useAuth = create((set, get) => ({
+  authRedirect: false,
   isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
   tokenExpiry: localStorage.getItem("tokenExpiry"),
   logoutTimeoutId: null,
+
+  setAuthRedirect: (value) => {
+    set({ authRedirect: value });
+  },
 
   login: (expiryDate) => {
     if (expiryDate) {
@@ -23,6 +28,7 @@ const useAuth = create((set, get) => ({
 
     if (timeout > 0) {
       const timeoutId = setTimeout(() => {
+        set({ authRedirect: true });
         get().logout();
       }, timeout);
       set({ logoutTimeoutId: timeoutId });
