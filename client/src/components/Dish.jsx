@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Dish = () => {
+  const { dishId } = useParams();
+  const [dishh, setDish] = useState({
+    name: "",
+    pic: "",
+    time: 0,
+    difficulty: "",
+    Likes: 0,
+    ingredients: [],
+    instructions: [],
+  });
+  //fetch dish data from server
+  useEffect(() => {
+    const getDish = async () => {
+      try {
+        const response = await fetch(`/api/dishes/${dishId}`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        setDish(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDish();
+  }, []);
+
   // fake data for testing
   const dish = {
     name: "Fettuccine Alfredo",

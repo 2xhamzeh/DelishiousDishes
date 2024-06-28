@@ -9,11 +9,14 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Dish from "./components/Dish";
+import User from "./components/User";
+import Error from "./components/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <Root />,
     children: [
       {
         index: true,
@@ -24,7 +27,7 @@ export const router = createBrowserRouter([
         element: <Dishes />,
       },
       {
-        path: "dish",
+        path: "dishes/:dishId",
         element: <Dish />,
       },
       {
@@ -33,7 +36,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "users/:userId",
-        element: <Profile />,
+        element: <User />,
       },
       {
         path: "help",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FormInput from "./FormInput";
-import SubmitButton from "./SubmitButton";
+import Button from "./Button";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -85,7 +85,7 @@ const Signup = () => {
           onChange={handleChange}
           iconSrc="/icons/lock.svg"
         />
-        <SubmitButton text="Sign Up" onClick={handleSubmit} />
+        <Button text="Sign Up" onClick={handleSubmit} />
         <span className="text-center font-light">
           Already a member?{" "}
           <Link to="/login" className=" font-medium text-c4">
