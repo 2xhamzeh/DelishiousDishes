@@ -5,7 +5,7 @@ import DishProfileList from "./DishProfileList";
 
 const User = () => {
   const { userId } = useParams();
-  const [userr, setUser] = useState({
+  const [user, setUser] = useState({
     username: "",
     description: "",
     dishes: [],
@@ -31,7 +31,7 @@ const User = () => {
   }, []);
 
   // fake data for testing
-  const user = {
+  const userr = {
     username: "Hamzeh",
     description:
       "Just an amateur cook Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam neque expedita velit temporibus magnam, fugiat molestias ea! Veritatis sint enim iure eligendi maxime. Nam eos, non iure veritatis dolor reiciendis.",

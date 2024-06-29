@@ -4,9 +4,9 @@ const dishesController = require("../controllers/dishesController");
 const { verifyToken } = require("../middleware/jwtAuth");
 
 router.get("/", dishesController.readAll);
-router.post("/", dishesController.create);
+router.post("/", verifyToken, dishesController.create);
 router.get("/:id", dishesController.read);
-router.put("/:id", dishesController.update);
-router.delete("/:id", dishesController.delete);
+router.put("/:id", verifyToken, dishesController.update);
+router.delete("/:id", verifyToken, dishesController.delete);
 
 module.exports = router;

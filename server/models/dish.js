@@ -5,7 +5,7 @@ const dishSchema = new mongoose.Schema({
     type: String,
     required: [true, "Path `name` is required."],
   },
-  picture: {
+  img: {
     type: String,
     required: false,
   },

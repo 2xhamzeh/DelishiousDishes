@@ -39,6 +39,7 @@ module.exports = {
 
   readAll: (req, res, next) => {
     User.find({})
+      .populate("dishes liked")
       .exec()
       .then((users) => {
         res.send(users);
@@ -47,9 +48,10 @@ module.exports = {
   },
 
   create: (req, res, next) => {
+    const { username, password, description, img } = req.body;
     User.register(
-      new User({ username: req.body.username }),
-      req.body.password,
+      new User({ username, description, img }),
+      password,
       (err, user) => {
         if (err) {
           return next(err);
@@ -62,8 +64,9 @@ module.exports = {
   },
 
   read: (req, res, next) => {
-    var userId = req.params.id;
+    const userId = req.params.id;
     User.findById(userId)
+      .populate("dishes liked")
       .then((user) => {
         if (!user) {
           return res.status(404).send();
@@ -74,8 +77,9 @@ module.exports = {
   },
 
   update: (req, res, next) => {
-    var userId = req.params.id;
+    const userId = req.params.id;
     User.findByIdAndUpdate(userId, req.body, { new: true })
+      .populate("dishes liked")
       .then((user) => {
         if (!user) {
           return res.status(404).send();
@@ -86,7 +90,7 @@ module.exports = {
   },
 
   delete: (req, res, next) => {
-    var userId = req.params.id;
+    const userId = req.params.id;
     User.findByIdAndDelete(userId)
       .then((user) => {
         if (!user) {

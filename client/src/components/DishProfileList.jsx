@@ -3,9 +3,7 @@ import DishCard from "./DishCard";
 import Button from "./Button";
 
 const DishProfileList = ({ dishes, name, icon }) => {
-  useEffect(() => {
-    console.log(dishes);
-  }, [dishes]);
+ 
   return (
     <div className="">
       <div className="flex items-center my-1">

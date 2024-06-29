@@ -2,8 +2,7 @@ const Dish = require("../models/dish");
 
 module.exports = {
   create: (req, res, next) => {
-    const { name, picture, time, difficulty, ingredients, instructions } =
-      req.body;
+    const { name, img, time, difficulty, ingredients, instructions } = req.body;
     const author = req.userId; // Ensure req.userId is set by JWT middleware
 
     if (!name || !ingredients || !instructions || !author) {
@@ -14,7 +13,7 @@ module.exports = {
 
     const dish = new Dish({
       name,
-      picture,
+      img,
       time,
       difficulty,
       ingredients,

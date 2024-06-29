@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 
 const Dish = () => {
   const { dishId } = useParams();
-  const [dishh, setDish] = useState({
+  const [dish, setDish] = useState({
     name: "",
-    pic: "",
+    img: "",
     time: 0,
     difficulty: "",
     Likes: 0,
@@ -21,7 +21,7 @@ const Dish = () => {
         });
         const data = await response.json();
         setDish(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -30,7 +30,7 @@ const Dish = () => {
   }, []);
 
   // fake data for testing
-  const dish = {
+  const dishh = {
     name: "Fettuccine Alfredo",
     pic: "/images/fettuccine.jpg",
     time: 22,
@@ -57,29 +57,30 @@ const Dish = () => {
   return (
     <div>
       <h1 className="text-center m-3 font-bold text-4xl">{dish.name}</h1>
-      <img className="w-72 h-72 object-cover mx-auto border" src={dish.pic} />
+      <img className="w-72 h-72 object-cover mx-auto border" src={dish.img} />
       <div className="flex gap-10 justify-center my-2 ">
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center items-center">
           <img className="w-11 h-11" src="/icons/clock.svg" />
           <span className="text-center">{dish.time} Min</span>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center items-center">
           <img className="w-11 h-11" src="/icons/difficultyMeter.svg" />
           <span className="text-center">{dish.difficulty}</span>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center items-center">
           <img className="w-11 h-11" src="/icons/heart.svg" />
-          <span className="text-center">{dish.Likes}</span>
+          <span className="text-center">{dish.likes}</span>
         </div>
       </div>
       <div>
         <h3 className="text-center font-bold text-2xl bg-c4">Ingredients</h3>
-        <ul className="text-center bg-c4 pb-5 mb-5">
+        <ul className="text-center bg-c4">
           {dish.ingredients.map((ingredient, index) => (
             <li className="odd:bg-c1" key={index}>
               {ingredient}
             </li>
           ))}
+          <li className="odd:bg-c1 even:bg-c4 text-transparent">.</li>
         </ul>
       </div>
       <div>
