@@ -37,6 +37,17 @@ const dishSchema = new mongoose.Schema({
   },
 });
 
+// Post-save middleware to update user's dishes array
+dishSchema.post("save", async function (doc) {
+  try {
+    await mongoose.model("User").findByIdAndUpdate(doc.author, {
+      $push: { dishes: doc._id },
+    });
+  } catch (error) {
+    console.error("Error updating user's dishes array:", error);
+  }
+});
+
 const Dish = mongoose.model("Dish", dishSchema);
 
 module.exports = Dish;

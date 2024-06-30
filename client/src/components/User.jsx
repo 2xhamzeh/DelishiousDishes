@@ -30,19 +30,6 @@ const User = () => {
     getUser();
   }, []);
 
-  // fake data for testing
-  const userr = {
-    username: "Hamzeh",
-    description:
-      "Just an amateur cook Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam neque expedita velit temporibus magnam, fugiat molestias ea! Veritatis sint enim iure eligendi maxime. Nam eos, non iure veritatis dolor reiciendis.",
-    dishes: [],
-    img: "/images/placeholder.png",
-    date: "11/11/2024",
-    postedDishes: 22,
-    likes: 42,
-    liked: [],
-  };
-
   return (
     <div className="flex items-start gap-5 p-5">
       <UserProfileCard

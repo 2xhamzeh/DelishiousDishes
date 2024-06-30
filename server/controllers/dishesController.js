@@ -28,7 +28,7 @@ module.exports = {
 
   readAll: (req, res, next) => {
     Dish.find({})
-      .populate("author", "username")
+      .select("name img") // Only include _id, name, and img
       .exec()
       .then((dishes) => res.send(dishes))
       .catch(next);
@@ -51,7 +51,6 @@ module.exports = {
   update: (req, res, next) => {
     const id = req.params.id;
     const updateFields = req.body;
-
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).send({
         error: { status: 400, message: "No fields to update provided" },

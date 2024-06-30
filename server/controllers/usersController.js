@@ -39,7 +39,7 @@ module.exports = {
 
   readAll: (req, res, next) => {
     User.find({})
-      .populate("dishes liked")
+      .select("username img")
       .exec()
       .then((users) => {
         res.send(users);
@@ -66,7 +66,14 @@ module.exports = {
   read: (req, res, next) => {
     const userId = req.params.id;
     User.findById(userId)
-      .populate("dishes liked")
+      .populate({
+        path: "dishes",
+        select: "name img likes", // Only include _id, name, and img (picture)
+      })
+      .populate({
+        path: "liked",
+        select: "name img", // Only include _id, name, and img (picture)
+      })
       .then((user) => {
         if (!user) {
           return res.status(404).send();
@@ -76,10 +83,18 @@ module.exports = {
       .catch(next);
   },
 
-  update: (req, res, next) => {
-    const userId = req.params.id;
-    User.findByIdAndUpdate(userId, req.body, { new: true })
-      .populate("dishes liked")
+  profile: (req, res, next) => {
+    const userId = req.userId; // Assuming jwtAuth sets req.userId
+
+    User.findById(userId)
+      .populate({
+        path: "dishes",
+        select: "name img likes", // Only include _id, name, img, and likes
+      })
+      .populate({
+        path: "liked",
+        select: "name img", // Only include _id, name, and img (picture)
+      })
       .then((user) => {
         if (!user) {
           return res.status(404).send();
@@ -87,10 +102,50 @@ module.exports = {
         res.send(user);
       })
       .catch(next);
+  },
+
+  update: async (req, res, next) => {
+    const userId = req.params.id;
+
+    // Check if the authenticated user is the same as the user being updated
+    if (req.userId !== userId) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    try {
+      // Update the user document
+      await User.findByIdAndUpdate(
+        userId,
+        { $set: req.body },
+        { runValidators: true }
+      );
+
+      // Fetch the updated user with the required fields populated
+      const updatedUser = await User.findById(userId)
+        .populate({
+          path: "dishes",
+          select: "name img likes", // Only include _id, name, and img (picture)
+        })
+        .populate({
+          path: "liked",
+          select: "name img", // Only include _id, name, and img (picture)
+        });
+
+      if (!updatedUser) {
+        return res.status(404).send();
+      }
+
+      res.send(updatedUser);
+    } catch (err) {
+      next(err);
+    }
   },
 
   delete: (req, res, next) => {
     const userId = req.params.id;
+    if (req.userId !== userId) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
     User.findByIdAndDelete(userId)
       .then((user) => {
         if (!user) {
