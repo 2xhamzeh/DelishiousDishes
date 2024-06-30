@@ -6,7 +6,7 @@ const User = require("../models/user");
 const secret = "your_jwt_secret_key";
 
 module.exports.generateToken = (user) => {
-  const expiresIn = 600; // in seconds
+  const expiresIn = 60000; // in seconds
   const token = jwt.sign({ id: user._id, username: user.username }, secret, {
     expiresIn,
   });
