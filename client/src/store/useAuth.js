@@ -5,12 +5,22 @@ const useAuth = create((set, get) => ({
   isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
   tokenExpiry: localStorage.getItem("tokenExpiry"),
   logoutTimeoutId: null,
+  authUserId: null,
 
   setAuthRedirect: (value) => {
     set({ authRedirect: value });
   },
 
-  login: (expiryDate) => {
+  login: (expiryDate, id) => {
+    if (id) {
+      localStorage.setItem("authUserId", id);
+      set({ authUserId: id });
+    } else {
+      id = localStorage.getItem("authUserId");
+      if (id) {
+        set({ authUserId: id });
+      }
+    }
     if (expiryDate) {
       localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("tokenExpiry", expiryDate);
@@ -38,6 +48,7 @@ const useAuth = create((set, get) => ({
   logout: () => {
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("tokenExpiry");
+    localStorage.removeItem("authUserId");
 
     const timeoutId = get().logoutTimeoutId;
     if (timeoutId) {
@@ -46,6 +57,7 @@ const useAuth = create((set, get) => ({
     }
 
     set({ isAuthenticated: false, tokenExpiry: null });
+    set({ authUserId: null });
   },
 }));
 

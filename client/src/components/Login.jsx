@@ -66,7 +66,7 @@ const Login = () => {
             // code to navigate to user profile
             const data = await response.json();
             navigate(`/users/${data.user.id}`);
-            authStoreLogin(data.tokenExpiry);
+            authStoreLogin(data.tokenExpiry, data.user.id);
           } else if (response.status === 401) {
             setErrorMessages(["Username or password incorrect"]);
           } else {
