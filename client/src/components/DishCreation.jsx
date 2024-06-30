@@ -26,11 +26,11 @@ const DishCreation = () => {
   };
 
   const validate = (ingredients, instructions) => {
-    setErrorMessages([]);
+
     let isValid = true; // Start assuming the form is valid
 
     if (dish.name.trim() === "") {
-      setErrorMessages((prevState) => [...prevState, "Please add a name"]);
+      error.push
       isValid = false; // Mark as invalid
     }
 

@@ -10,6 +10,9 @@ const FormInput = ({ type, name, placeholder, value, onChange, iconSrc }) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onInput={(e) => {
+          e.target.value = e.target.value.replace(/\s+/g, "");
+        }}
         className="bg-white w-60 focus:outline-none"
       />
     </div>

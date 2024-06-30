@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import Button from "./Button";
 import { Link, useNavigate } from "react-router-dom";
+import ErrorMessages from "./ErrorMessages";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -20,34 +21,68 @@ const Signup = () => {
     }));
   };
 
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  const validate = () => {
+    const errors = [];
+    let isValid = true;
+    if (formData.username.trim() === "") {
+      errors.push("Please enter a username");
+      isValid = false;
+    } else if (formData.username.length < 3) {
+      errors.push("Username must be at least 3 characters long");
+      isValid = false;
+    }
+    if (formData.password.trim() === "") {
+      errors.push("Please enter a password");
+      isValid = false;
+    } else if (formData.password.length < 6) {
+      errors.push("Password must be at least 6 characters long");
+      isValid = false;
+    }
+    if (formData.confirmPassword.trim() === "") {
+      errors.push("Please confirm your password");
+      isValid = false;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      errors.push("Passwords do not match");
+      isValid = false;
+    }
+    setErrorMessages(errors);
+    return isValid;
+  };
+
   const handleSubmit = () => {
-    // TODO:
-    // - check if input is valid
-    // submit using fetch POST
-    const register = async () => {
-      try {
-        const response = await fetch("/api/users/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        });
-        if (response.status === 200) {
-          // code to navigate to user profile
-          const data = await response.json();
-          navigate(`/users/${data.user.id}`);
-        } else {
-          // code to show error message
+    if (validate()) {
+      const register = async () => {
+        try {
+          const response = await fetch("/api/users/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              password: formData.password,
+            }),
+          });
+          if (response.status === 201) {
+            // code to navigate to user profile
+            const data = await response.json();
+            navigate(`/users/${data.user.id}`);
+          } else if (response.status === 409) {
+            const data = await response.json();
+            setErrorMessages([data.message]);
+          } else {
+            const data = await response.json();
+            setErrorMessages([data.message]);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    register();
+      };
+      register();
+    }
   };
 
   return (
@@ -85,6 +120,7 @@ const Signup = () => {
           onChange={handleChange}
           iconSrc="/icons/lock.svg"
         />
+        <ErrorMessages messages={errorMessages} />
         <Button text="Sign Up" onClick={handleSubmit} />
         <span className="text-center font-light">
           Already a member?{" "}
