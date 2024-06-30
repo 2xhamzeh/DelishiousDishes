@@ -28,7 +28,7 @@ const User = () => {
       }
     };
     getUser();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="flex items-start gap-5 p-5">

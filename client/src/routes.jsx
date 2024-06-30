@@ -7,7 +7,6 @@ import Help from "./components/Help";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import Profile from "./components/Profile";
 import Dish from "./components/Dish";
 import User from "./components/User";
 import DishCreation from "./components/DishCreation";
@@ -59,10 +58,6 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
       },
       {
         path: "createDish",
