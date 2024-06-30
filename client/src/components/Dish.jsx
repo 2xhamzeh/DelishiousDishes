@@ -59,7 +59,6 @@ const Dish = () => {
               {ingredient}
             </li>
           ))}
-          <li className="odd:bg-c1 even:bg-c4 text-transparent">.</li>
         </ul>
       </div>
       <div>

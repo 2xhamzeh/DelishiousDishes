@@ -12,6 +12,7 @@ export default {
       c4: "#EFBC9B",
       black: "#000000",
       white: "#FFFFFF",
+      red: "#FF0000",
     },
   },
   plugins: [],

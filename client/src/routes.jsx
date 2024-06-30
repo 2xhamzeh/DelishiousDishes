@@ -10,7 +10,7 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Dish from "./components/Dish";
 import User from "./components/User";
-import Error from "./components/Error";
+import DishCreation from "./components/DishCreation";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "createDish",
+        element: <DishCreation />,
       },
     ],
   },

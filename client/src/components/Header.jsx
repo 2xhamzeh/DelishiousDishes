@@ -47,9 +47,12 @@ const Header = () => {
           </li>
           {isAuthenticated && (
             <li>
-              <button className="bg-c1 border drop-shadow p-2 rounded-full h-8 flex items-center">
+              <Link
+                to="/createDish"
+                className="bg-c1 border drop-shadow p-2 rounded-full h-8 flex items-center"
+              >
                 CREATE
-              </button>
+              </Link>
             </li>
           )}
           <li>
