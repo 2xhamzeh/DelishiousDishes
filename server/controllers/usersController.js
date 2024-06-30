@@ -97,27 +97,6 @@ module.exports = {
       .catch(next);
   },
 
-  profile: (req, res, next) => {
-    const userId = req.userId; // Assuming jwtAuth sets req.userId
-
-    User.findById(userId)
-      .populate({
-        path: "dishes",
-        select: "name img likes", // Only include _id, name, img, and likes
-      })
-      .populate({
-        path: "liked",
-        select: "name img", // Only include _id, name, and img (picture)
-      })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send();
-        }
-        res.send(user);
-      })
-      .catch(next);
-  },
-
   update: async (req, res, next) => {
     const userId = req.params.id;
 

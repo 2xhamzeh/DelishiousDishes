@@ -8,8 +8,10 @@ const Header = () => {
   const logout = useAuth((state) => state.logout);
   const navigate = useNavigate();
 
+  const authUserId = useAuth((state) => state.authUserId);
+
   const profileOnclick = () => {
-    isAuthenticated ? navigate("/profile") : navigate("/login");
+    isAuthenticated ? navigate(`/users/${authUserId}`) : navigate("/login");
   };
 
   const handleLogout = async () => {

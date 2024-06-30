@@ -7,7 +7,6 @@ router.post("/authenticate", usersController.authenticate);
 router.post("/logout", verifyToken, usersController.logout);
 router.get("/", usersController.readAll);
 router.post("/", usersController.create);
-router.get("/profile", verifyToken, usersController.profile);
 router.get("/:id", usersController.read);
 router.put("/:id", verifyToken, usersController.update);
 router.delete("/:id", verifyToken, usersController.delete);
