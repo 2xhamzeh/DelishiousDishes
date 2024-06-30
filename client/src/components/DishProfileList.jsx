@@ -1,9 +1,13 @@
 import React from "react";
 import DishCard from "./DishCard";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
-const DishProfileList = ({ dishes, name, icon }) => {
- 
+const DishProfileList = ({ dishes, name, icon, userId, list }) => {
+  const navigate = useNavigate();
+  const handleMore = () => {
+    navigate(`/users/${userId}/${list}`);
+  };
   return (
     <div className="">
       <div className="flex items-center my-1">
@@ -24,7 +28,7 @@ const DishProfileList = ({ dishes, name, icon }) => {
             ))}
         {dishes && dishes.length >= 4 && (
           <div className="m-2 bg-c3 w-60 h-60 flex justify-center items-center mb-12 border">
-            <Button text={"More"} onClick={() => {}} />
+            <Button text={"More"} onClick={handleMore} />
           </div>
         )}
       </div>

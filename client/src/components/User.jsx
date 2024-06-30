@@ -46,6 +46,8 @@ const User = () => {
             dishes={user.dishes}
             name={"Dishes"}
             icon={"/icons/profile.svg"}
+            userId={user._id}
+            list={"dishes"}
           />
         )}
         {user.liked && user.liked.length > 0 && (
@@ -53,6 +55,8 @@ const User = () => {
             dishes={user.liked}
             name={"Liked"}
             icon={"/icons/profile.svg"}
+            userId={user._id}
+            list={"liked"}
           />
         )}
       </div>

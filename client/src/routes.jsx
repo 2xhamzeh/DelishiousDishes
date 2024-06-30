@@ -11,6 +11,8 @@ import Profile from "./components/Profile";
 import Dish from "./components/Dish";
 import User from "./components/User";
 import DishCreation from "./components/DishCreation";
+import LikedDishList from "./components/LikedDishList";
+import CreatedDishList from "./components/CreatedDishList";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ export const router = createBrowserRouter([
       {
         path: "users/:userId",
         element: <User />,
+      },
+      {
+        path: "users/:userId/dishes",
+        element: <CreatedDishList />,
+      },
+      {
+        path: "users/:userId/liked",
+        element: <LikedDishList />,
       },
       {
         path: "help",
