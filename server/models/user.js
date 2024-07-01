@@ -18,10 +18,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     minlength: 3,
+    maxlength: 20,
   },
   description: {
     type: String,
-    required: false,
   },
   dishes: [
     {
@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
   ],
   img: {
     type: String,
-    required: false,
   },
   date: {
     type: Date,
@@ -46,22 +45,15 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-// Add a virtual field for likes
 userSchema.virtual("likes").get(function () {
-  if (this.dishes && this.dishes.length > 0) {
-    return this.dishes.reduce((total, dish) => total + (dish.likes || 0), 0);
-  }
-  return 0;
+  return this.dishes.reduce((total, dish) => total + (dish.likes || 0), 0);
 });
 
-// Plugin passport-local-mongoose and define usernameField
 userSchema.plugin(passportLocalMongoose, {
   usernameField: "username",
 });
 
-// Ensure virtuals and getters are included when converting documents to JSON
 userSchema.set("toJSON", { virtuals: true, getters: true });
 userSchema.set("toObject", { virtuals: true, getters: true });
 
-// Export the model
 module.exports = mongoose.model("User", userSchema);

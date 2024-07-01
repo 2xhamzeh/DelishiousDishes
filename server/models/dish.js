@@ -4,10 +4,11 @@ const dishSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Path `name` is required."],
+    minlength: 2,
+    maxlength: 50,
   },
   img: {
     type: String,
-    required: false,
   },
   likes: {
     type: Number,
@@ -15,43 +16,44 @@ const dishSchema = new mongoose.Schema({
   },
   time: {
     type: Number, // assuming time is in minutes
-    required: false,
   },
   difficulty: {
     type: String,
     enum: ["Easy", "Medium", "Hard"],
-    required: false,
   },
   ingredients: {
     type: [String],
     required: [true, "Path `ingredients` is required."],
+    validate: [
+      arrayLimit,
+      "Path `ingredients` requires at least 1 ingredient.",
+    ],
   },
   instructions: {
     type: [String],
     required: [true, "Path `instructions` is required."],
+    validate: [
+      arrayLimit,
+      "Path `instructions` requires at least 1 instruction.",
+    ],
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: [true, "Path `author` is required."],
   },
-  likedBy: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User",
-    required: false,
-  },
+  likedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
-// Post-save middleware to update user's dishes array
-// dishSchema.post("save", async function (doc) {
-//   try {
-//     await mongoose.model("User").findByIdAndUpdate(doc.author, {
-//       $push: { dishes: doc._id },
-//     });
-//   } catch (error) {
-//     console.error("Error updating user's dishes array:", error);
-//   }
-// });
+// Helper function to ensure array contains at least one item
+function arrayLimit(val) {
+  return val.length > 0;
+}
 
 const Dish = mongoose.model("Dish", dishSchema);
 
