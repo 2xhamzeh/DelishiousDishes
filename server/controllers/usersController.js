@@ -140,18 +140,37 @@ module.exports = {
     }
   },
 
-  delete: (req, res, next) => {
+  delete: async (req, res, next) => {
     const userId = req.params.id;
     if (req.userId !== userId) {
       return res.status(403).send({ message: "Forbidden" });
     }
-    User.findByIdAndDelete(userId)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send();
-        }
-        res.send(user);
-      })
-      .catch(next);
+
+    try {
+      // Find the user to delete
+      const user = await User.findByIdAndDelete(userId).exec();
+      if (!user) {
+        return res.status(404).send();
+      }
+
+      // Delete all dishes authored by the user
+      await Dish.deleteMany({ author: userId }).exec();
+
+      // Remove the user from all likedBy arrays in dishes
+      await Dish.updateMany(
+        { likedBy: userId },
+        { $pull: { likedBy: userId } }
+      ).exec();
+
+      // Remove the user's ID from the liked array in all users
+      await User.updateMany(
+        { liked: userId },
+        { $pull: { liked: userId } }
+      ).exec();
+
+      res.send(user);
+    } catch (error) {
+      next(error);
+    }
   },
 };

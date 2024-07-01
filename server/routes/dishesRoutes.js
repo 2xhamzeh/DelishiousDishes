@@ -8,5 +8,7 @@ router.post("/", verifyToken, dishesController.create);
 router.get("/:id", dishesController.read);
 router.put("/:id", verifyToken, dishesController.update);
 router.delete("/:id", verifyToken, dishesController.delete);
+router.post("/:id/like", verifyToken, dishesController.like);
+router.post("/:id/unlike", verifyToken, dishesController.unlike);
 
 module.exports = router;

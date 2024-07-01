@@ -452,6 +452,8 @@ const seedDatabase = async () => {
         author: user._id,
       });
       await dish.save();
+      user.dishes.push(dish._id);
+      await user.save();
     }
     console.log("Dishes created and associated with users!");
 

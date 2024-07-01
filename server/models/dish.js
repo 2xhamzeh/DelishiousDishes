@@ -35,18 +35,23 @@ const dishSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "Path `author` is required."],
   },
+  likedBy: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+    required: false,
+  },
 });
 
 // Post-save middleware to update user's dishes array
-dishSchema.post("save", async function (doc) {
-  try {
-    await mongoose.model("User").findByIdAndUpdate(doc.author, {
-      $push: { dishes: doc._id },
-    });
-  } catch (error) {
-    console.error("Error updating user's dishes array:", error);
-  }
-});
+// dishSchema.post("save", async function (doc) {
+//   try {
+//     await mongoose.model("User").findByIdAndUpdate(doc.author, {
+//       $push: { dishes: doc._id },
+//     });
+//   } catch (error) {
+//     console.error("Error updating user's dishes array:", error);
+//   }
+// });
 
 const Dish = mongoose.model("Dish", dishSchema);
 

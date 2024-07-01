@@ -4,6 +4,7 @@ import useAuth from "../store/useAuth";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import LikeButton from "./LikeButton";
 
 const Dish = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Dish = () => {
     time: 0,
     difficulty: "",
     likes: 0,
+    likedBy: [],
     ingredients: [],
     instructions: [],
   });
@@ -55,10 +57,11 @@ const Dish = () => {
             <span className="text-center">{dish.difficulty}</span>
           </div>
         )}
-        <div className="flex flex-col justify-center items-center">
-          <img className="w-11 h-11" src="/icons/heart.svg" />
-          <span className="text-center">{dish.likes}</span>
-        </div>
+        <LikeButton
+          dishId={dish._id}
+          likedBy={dish.likedBy}
+          likesCount={dish.likes}
+        />
         {dish.author && (
           <Link
             to={`/users/${dish.author._id}`}
