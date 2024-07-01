@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAuth from "../store/useAuth";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Dish = () => {
+  const navigate = useNavigate();
+  const authUserId = useAuth((state) => state.authUserId);
   const { dishId } = useParams();
   const [dish, setDish] = useState({
     name: "",
     img: "",
     time: 0,
     difficulty: "",
-    Likes: 0,
+    likes: 0,
     ingredients: [],
     instructions: [],
   });
@@ -53,6 +59,15 @@ const Dish = () => {
           <img className="w-11 h-11" src="/icons/heart.svg" />
           <span className="text-center">{dish.likes}</span>
         </div>
+        {dish.author && (
+          <Link
+            to={`/users/${dish.author._id}`}
+            className="flex flex-col justify-center items-center"
+          >
+            <img className="w-11 h-11" src="/icons/profile.svg" />
+            <span className="text-center">{dish.author.username}</span>
+          </Link>
+        )}
       </div>
       <div>
         <h3 className="text-center font-bold text-2xl bg-c4">Ingredients</h3>
@@ -76,6 +91,35 @@ const Dish = () => {
           ))}
         </ol>
       </div>
+      {dish.author && authUserId && authUserId === dish.author.id && (
+        <div className="flex justify-center gap-4 mt-4">
+          <Button
+            text={"Edit"}
+            onClick={() => {
+              navigate(`/dishes/${dishId}/edit`);
+            }}
+          />
+          <button
+            className={`bg-c3 border drop-shadow text-xl p-2 rounded-full w-40`}
+            onClick={async () => {
+              try {
+                const response = await fetch(`/api/dishes/${dishId}`, {
+                  method: "DELETE",
+                });
+                if (response.status === 200) {
+                  navigate(`/users/${authUserId}`);
+                } else {
+                  console.log("Failed to delete dish");
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };

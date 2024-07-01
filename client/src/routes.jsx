@@ -13,6 +13,7 @@ import DishCreation from "./components/DishCreation";
 import LikedDishList from "./components/LikedDishList";
 import CreatedDishList from "./components/CreatedDishList";
 import EditProfile from "./components/EditProfile";
+import EditDish from "./components/EditDish";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "createDish",
         element: <DishCreation />,
+      },
+      {
+        path: "/dishes/:dishId/edit",
+        element: <EditDish />,
       },
     ],
   },

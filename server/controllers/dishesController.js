@@ -37,7 +37,7 @@ module.exports = {
   read: (req, res, next) => {
     const id = req.params.id;
     Dish.findById(id)
-      .populate("author", "username")
+      .populate("author", "username img")
       .exec()
       .then((dish) => {
         if (!dish) {
