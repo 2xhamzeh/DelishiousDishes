@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const errorController = require("./controllers/errorController");
+const path = require("path");
 
 const User = require("./models/user");
 const apiRouter = require("./routes/api");
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 // Using public as main directory for static content
 app.use(express.static("public"));
+app.use(express.static(path.join(__dirname + "/dist")));
 
 app.use(passport.initialize());
 

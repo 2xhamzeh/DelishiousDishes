@@ -1,6 +1,11 @@
+const path = require("path");
+
 module.exports = {
-  // return index.html (for now redirect to frontend)
-  homePage: (req, res) => {
-    res.redirect("http://localhost:5173/");
+  homePage: (req, res, next) => {
+    try {
+      res.sendFile(path.join(__dirname, "../dist/index.html"));
+    } catch (err) {
+      next(err);
+    }
   },
 };
