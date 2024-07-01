@@ -3,8 +3,10 @@ import FormInput from "./FormInput";
 import Button from "./Button";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessages from "./ErrorMessages";
+import useAuth from "../store/useAuth";
 
 const Signup = () => {
+  const authStoreLogin = useAuth((state) => state.login);
   const navigate = useNavigate();
   // stores form state
   const [formData, setFormData] = useState({
@@ -69,7 +71,29 @@ const Signup = () => {
           if (response.status === 201) {
             // code to navigate to user profile
             const data = await response.json();
-            navigate(`/users/${data.user.id}`);
+
+            try {
+              const response = await fetch("/api/users/authenticate", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  username: formData.username,
+                  password: formData.password,
+                }),
+              });
+              if (response.status === 200) {
+                // code to navigate to user profile
+                const data = await response.json();
+                navigate(`/users/${data.user.id}`);
+                authStoreLogin(data.tokenExpiry, data.user.id);
+              } else {
+                setErrorMessages(["Something went wrong, please try again"]);
+              }
+            } catch (error) {
+              console.log(error);
+            }
           } else if (response.status === 409) {
             const data = await response.json();
             setErrorMessages([data.message]);

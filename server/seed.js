@@ -17,7 +17,6 @@ const User = require("./models/user");
 const dishes = [
   {
     name: "Fettuccine Alfredo",
-    img: "/images/dish.jpg",
     likes: 10,
     time: 30,
     difficulty: "Easy",
@@ -26,7 +25,6 @@ const dishes = [
   },
   {
     name: "Falafel",
-    img: "/images/dish.jpg",
     likes: 20,
     time: 45,
     difficulty: "Medium",
@@ -35,7 +33,6 @@ const dishes = [
   },
   {
     name: "Shawarma",
-    img: "/images/dish.jpg",
     likes: 15,
     time: 60,
     difficulty: "Hard",
@@ -44,7 +41,6 @@ const dishes = [
   },
   {
     name: "Cheese Cake",
-    img: "/images/dish.jpg",
     likes: 25,
     time: 90,
     difficulty: "Medium",
@@ -53,7 +49,6 @@ const dishes = [
   },
   {
     name: "Margherita Pizza",
-    img: "/images/dish.jpg",
     likes: 30,
     time: 40,
     difficulty: "Easy",
@@ -62,7 +57,6 @@ const dishes = [
   },
   {
     name: "Pad Thai",
-    img: "/images/dish.jpg",
     likes: 40,
     time: 50,
     difficulty: "Medium",
@@ -71,7 +65,6 @@ const dishes = [
   },
   {
     name: "Tacos",
-    img: "/images/dish.jpg",
     likes: 35,
     time: 30,
     difficulty: "Easy",
@@ -80,7 +73,6 @@ const dishes = [
   },
   {
     name: "Sushi",
-    img: "/images/dish.jpg",
     likes: 50,
     time: 60,
     difficulty: "Hard",
@@ -94,7 +86,6 @@ const dishes = [
   },
   {
     name: "Chocolate Cake",
-    img: "/images/dish.jpg",
     likes: 45,
     time: 90,
     difficulty: "Medium",
@@ -108,7 +99,6 @@ const dishes = [
   },
   {
     name: "Chicken Curry",
-    img: "/images/dish.jpg",
     likes: 55,
     time: 70,
     difficulty: "Medium",
@@ -122,7 +112,6 @@ const dishes = [
   },
   {
     name: "Lasagna",
-    img: "/images/dish.jpg",
     likes: 60,
     time: 120,
     difficulty: "Hard",
@@ -136,7 +125,6 @@ const dishes = [
   },
   {
     name: "Biryani",
-    img: "/images/dish.jpg",
     likes: 70,
     time: 90,
     difficulty: "Hard",
@@ -145,7 +133,6 @@ const dishes = [
   },
   {
     name: "Caesar Salad",
-    img: "/images/dish.jpg",
     likes: 25,
     time: 20,
     difficulty: "Easy",
@@ -154,7 +141,6 @@ const dishes = [
   },
   {
     name: "Pancakes",
-    img: "/images/dish.jpg",
     likes: 35,
     time: 20,
     difficulty: "Easy",
@@ -163,7 +149,6 @@ const dishes = [
   },
   {
     name: "Grilled Cheese",
-    img: "/images/dish.jpg",
     likes: 30,
     time: 10,
     difficulty: "Easy",
@@ -172,7 +157,6 @@ const dishes = [
   },
   {
     name: "Beef Stroganoff",
-    img: "/images/dish.jpg",
     likes: 40,
     time: 60,
     difficulty: "Medium",
@@ -181,7 +165,6 @@ const dishes = [
   },
   {
     name: "Clam Chowder",
-    img: "/images/dish.jpg",
     likes: 45,
     time: 45,
     difficulty: "Medium",
@@ -190,7 +173,6 @@ const dishes = [
   },
   {
     name: "Eggs Benedict",
-    img: "/images/dish.jpg",
     likes: 50,
     time: 30,
     difficulty: "Hard",
@@ -199,7 +181,6 @@ const dishes = [
   },
   {
     name: "Ratatouille",
-    img: "/images/dish.jpg",
     likes: 40,
     time: 60,
     difficulty: "Medium",
@@ -208,7 +189,6 @@ const dishes = [
   },
   {
     name: "Chicken Alfredo",
-    img: "/images/dish.jpg",
     likes: 35,
     time: 40,
     difficulty: "Easy",
@@ -222,7 +202,6 @@ const dishes = [
   },
   {
     name: "Fish Tacos",
-    img: "/images/dish.jpg",
     likes: 55,
     time: 30,
     difficulty: "Easy",
@@ -231,7 +210,6 @@ const dishes = [
   },
   {
     name: "BBQ Ribs",
-    img: "/images/dish.jpg",
     likes: 60,
     time: 180,
     difficulty: "Hard",
@@ -240,7 +218,6 @@ const dishes = [
   },
   {
     name: "Greek Salad",
-    img: "/images/dish.jpg",
     likes: 25,
     time: 15,
     difficulty: "Easy",
@@ -253,7 +230,6 @@ const dishes = [
   },
   {
     name: "Stuffed Peppers",
-    img: "/images/dish.jpg",
     likes: 45,
     time: 60,
     difficulty: "Medium",
@@ -262,7 +238,6 @@ const dishes = [
   },
   {
     name: "Lemon Meringue Pie",
-    img: "/images/dish.jpg",
     likes: 50,
     time: 90,
     difficulty: "Hard",
@@ -275,7 +250,6 @@ const dishes = [
   },
   {
     name: "Chicken Tikka Masala",
-    img: "/images/dish.jpg",
     likes: 60,
     time: 60,
     difficulty: "Medium",
@@ -284,7 +258,6 @@ const dishes = [
   },
   {
     name: "Goulash",
-    img: "/images/dish.jpg",
     likes: 35,
     time: 75,
     difficulty: "Medium",
@@ -297,7 +270,6 @@ const dishes = [
   },
   {
     name: "Quiche Lorraine",
-    img: "/images/dish.jpg",
     likes: 40,
     time: 60,
     difficulty: "Medium",
@@ -311,7 +283,6 @@ const dishes = [
   },
   {
     name: "Bruschetta",
-    img: "/images/dish.jpg",
     likes: 30,
     time: 20,
     difficulty: "Easy",
@@ -320,7 +291,6 @@ const dishes = [
   },
   {
     name: "Shrimp Scampi",
-    img: "/images/dish.jpg",
     likes: 45,
     time: 30,
     difficulty: "Easy",
@@ -335,133 +305,111 @@ const users = [
     username: "admin",
     password: "admin123",
     description: "Administrator",
-    img: "/images/placeholder.png",
   },
   {
     username: "user123",
     password: "123123123",
     description: "Just a regular user",
-    img: "/images/placeholder.png",
   },
   {
     username: "user1",
     password: "password1",
     description: "Food lover",
-    img: "/images/placeholder.png",
   },
   {
     username: "user2",
     password: "password2",
     description: "Chef",
-    img: "/images/placeholder.png",
   },
   {
     username: "user3",
     password: "password3",
     description: "Baker",
-    img: "/images/placeholder.png",
   },
   {
     username: "user4",
     password: "password4",
     description: "Grill master",
-    img: "/images/placeholder.png",
   },
   {
     username: "user5",
     password: "password5",
     description: "Vegetarian",
-    img: "/images/placeholder.png",
   },
   {
     username: "user6",
     password: "password6",
     description: "Vegan",
-    img: "/images/placeholder.png",
   },
   {
     username: "user7",
     password: "password7",
     description: "Home cook",
-    img: "/images/placeholder.png",
   },
   {
     username: "user8",
     password: "password8",
     description: "Food blogger",
-    img: "/images/placeholder.png",
   },
   {
     username: "user9",
     password: "password9",
     description: "Gourmet chef",
-    img: "/images/placeholder.png",
   },
   {
     username: "user10",
     password: "password10",
     description: "Dessert lover",
-    img: "/images/placeholder.png",
   },
   {
     username: "user11",
     password: "password11",
     description: "Sauce expert",
-    img: "/images/placeholder.png",
   },
   {
     username: "user12",
     password: "password12",
     description: "Soup specialist",
-    img: "/images/placeholder.png",
   },
   {
     username: "user13",
     password: "password13",
     description: "Pasta enthusiast",
-    img: "/images/placeholder.png",
   },
   {
     username: "user14",
     password: "password14",
     description: "Healthy eater",
-    img: "/images/placeholder.png",
   },
   {
     username: "user15",
     password: "password15",
     description: "Meat lover",
-    img: "/images/placeholder.png",
   },
   {
     username: "user16",
     password: "password16",
     description: "Spice king",
-    img: "/images/placeholder.png",
   },
   {
     username: "user17",
     password: "password17",
     description: "Salad fan",
-    img: "/images/placeholder.png",
   },
   {
     username: "user18",
     password: "password18",
     description: "Breakfast expert",
-    img: "/images/placeholder.png",
   },
   {
     username: "user19",
     password: "password19",
     description: "Dinner specialist",
-    img: "/images/placeholder.png",
   },
   {
     username: "user20",
     password: "password20",
     description: "Snack lover",
-    img: "/images/placeholder.png",
   },
 ];
 

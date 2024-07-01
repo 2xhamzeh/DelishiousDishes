@@ -32,7 +32,10 @@ const Dish = () => {
   return (
     <div>
       <h1 className="text-center m-3 font-bold text-4xl">{dish.name}</h1>
-      <img className="w-72 h-72 object-cover mx-auto border" src={dish.img} />
+      <img
+        className="w-72 h-72 object-cover mx-auto border"
+        src={dish.img || "/images/placeholder.png"}
+      />
       <div className="flex gap-10 justify-center my-2 ">
         {dish.time && (
           <div className="flex flex-col justify-center items-center">

@@ -9,7 +9,7 @@ const UserProfileCard = ({
   likes,
 }) => {
   return (
-    <div className="flex flex-col flex-shrink-0 p-5 justify-center items-center gap-2">
+    <div className="flex flex-col p-5 justify-center items-center gap-2">
       <img className="w-64 h-64 border rounded-full" src={img} />
       <h1 className=" font-bold text-2xl">{username}</h1>
       <p className="max-w-60 text-center text-sm break-words">{description}</p>

@@ -36,10 +36,10 @@ const User = () => {
 
   return (
     <div className="flex items-start gap-5 p-5">
-      <div>
+      <div className=" flex-shrink-0">
         <UserProfileCard
           username={user.username}
-          img={user.img}
+          img={user.img || "/images/placeholder.png"}
           description={user.description}
           date={user.date}
           posts={user.dishes.length}
