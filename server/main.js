@@ -34,7 +34,9 @@ app.use(homeRouter);
 
 // Connect to database
 mongoose
-  .connect(process.env.DB_URI, { dbName: "delishious_dishes_db" })
+  .connect(process.env.DB_URI || "mongodb://localhost:27017/", {
+    dbName: "delishious_dishes_db",
+  })
   .then(() => {
     console.log("Connected to MongoDB!");
   })
