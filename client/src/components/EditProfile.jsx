@@ -3,6 +3,7 @@ import useAuth from "../store/useAuth";
 import Button from "./Button"; // Assuming Button is a common component
 import ErrorMessages from "./ErrorMessages"; // Assuming ErrorMessages is a common component
 import { useNavigate } from "react-router-dom";
+import EditUserImage from "./EditUserImage";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const EditProfile = () => {
     username: "",
     description: "",
   });
+  const [selectedImage, setSelectedImage] = useState(null);
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
@@ -57,6 +59,7 @@ const EditProfile = () => {
   const handleSubmit = async () => {
     if (validate()) {
       try {
+        // Update user details
         const response = await fetch(`/api/users/${authUserId}`, {
           method: "PUT",
           headers: {
@@ -66,9 +69,26 @@ const EditProfile = () => {
         });
 
         if (response.status === 200) {
+          // If user details updated successfully, upload the image
+          if (selectedImage) {
+            const formData = new FormData();
+            formData.append("image", selectedImage);
+
+            const imageResponse = await fetch(
+              `/api/upload/userImage/${authUserId}`,
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (!imageResponse.ok) {
+              setErrorMessages(["Failed to upload image."]);
+            }
+          }
+
           navigate(`/users/${authUserId}`);
         } else if (response.status === 409) {
-          const data = await response.json();
           setErrorMessages(["Username already taken"]);
         } else {
           setErrorMessages(["An error occurred. Please try again later"]);
@@ -84,12 +104,14 @@ const EditProfile = () => {
       <h1 className="text-center font-bold text-3xl mt-8 mb-10">
         Edit Profile
       </h1>
+
       <form
         action=""
         method="POST"
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center gap-4"
       >
+        <EditUserImage user={user} onImageSelect={setSelectedImage} />
         <div className="flex flex-col items-center">
           <label className="font-semibold text-lg" htmlFor="username">
             Username

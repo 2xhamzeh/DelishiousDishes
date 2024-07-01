@@ -4,6 +4,7 @@ import Button from "./Button";
 import DishCreationIngredients from "./DishCreationIngredients";
 import DishCreationInstructions from "./DishCreationInstructions";
 import ErrorMessages from "./ErrorMessages";
+import EditDishImage from "./EditDishImage";
 
 const EditDish = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const EditDish = () => {
   });
   const [ingredients, setIngredients] = useState([""]);
   const [instructions, setInstructions] = useState([""]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ const EditDish = () => {
           name: data.name || "",
           time: data.time || "",
           difficulty: data.difficulty || "Easy",
+          img: data.img || null,
         });
         setIngredients(data.ingredients || [""]);
         setInstructions(data.instructions || [""]);
@@ -68,39 +71,53 @@ const EditDish = () => {
     return isValid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const cleanedIngredients = ingredients.filter((str) => str.trim() !== "");
     const cleanedInstructions = instructions.filter((str) => str.trim() !== "");
 
     if (validate(cleanedIngredients, cleanedInstructions)) {
-      const updateDish = async () => {
-        try {
-          const response = await fetch(`/api/dishes/${dishId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: dish.name,
-              time: dish.time,
-              difficulty: dish.difficulty,
-              ingredients: cleanedIngredients,
-              instructions: cleanedInstructions,
-            }),
-          });
+      try {
+        // Update dish details
+        const response = await fetch(`/api/dishes/${dishId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: dish.name,
+            time: dish.time,
+            difficulty: dish.difficulty,
+            ingredients: cleanedIngredients,
+            instructions: cleanedInstructions,
+          }),
+        });
 
-          if (response.status === 200) {
-            const data = await response.json();
-            navigate(`/dishes/${data._id}`);
-          } else {
-            console.log("Failed to update dish");
+        if (response.status === 200) {
+          // If dish details updated successfully, upload the image
+          if (selectedImage) {
+            const formData = new FormData();
+            formData.append("image", selectedImage);
+
+            const imageResponse = await fetch(
+              `/api/upload/dishImage/${dishId}`,
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (!imageResponse.ok) {
+              setErrorMessages(["Failed to upload image."]);
+            }
           }
-        } catch (error) {
-          console.log(error);
-        }
-      };
 
-      updateDish();
+          navigate(`/dishes/${dishId}`);
+        } else {
+          setErrorMessages(["An error occurred. Please try again later"]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -113,6 +130,7 @@ const EditDish = () => {
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center gap-4"
       >
+        <EditDishImage dish={dish} onImageSelect={setSelectedImage} />
         <div className="flex flex-col items-center">
           <label className="font-semibold text-lg" htmlFor="name">
             Name

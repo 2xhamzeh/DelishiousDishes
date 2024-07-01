@@ -2,6 +2,16 @@ const User = require("../models/user");
 const Dish = require("../models/dish"); // Ensure you require Dish if you use it
 const passport = require("passport");
 const jwtAuth = require("../middleware/jwtAuth");
+const fs = require("fs");
+const path = require("path");
+
+const deleteImage = (imagePath) => {
+  fs.unlink(path.join(__dirname, "..", imagePath), (err) => {
+    if (err) {
+      console.error(`Error deleting file: ${imagePath}`, err);
+    }
+  });
+};
 
 module.exports = {
   authenticate: async (req, res, next) => {
@@ -156,6 +166,41 @@ module.exports = {
       res.json({ message: "User deleted successfully", user });
     } catch (error) {
       next(error);
+    }
+  },
+  uploadUserImage: async (req, res) => {
+    const userId = req.params.userId;
+
+    if (req.userId !== userId) {
+      if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+      return res
+        .status(403)
+        .json({ message: "Forbidden - Not allowed to update this user" });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded." });
+    }
+
+    const imagePath = `/uploads/images/${req.file.filename}`;
+
+    try {
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { img: imagePath },
+        { new: true }
+      );
+      if (!user) {
+        deleteImage(imagePath);
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json({
+        message: "File uploaded and user image updated successfully.",
+        user,
+      });
+    } catch (error) {
+      deleteImage(imagePath);
+      res.status(500).json({ message: "Error updating user image", error });
     }
   },
 };

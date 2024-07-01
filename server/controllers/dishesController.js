@@ -1,5 +1,15 @@
 const Dish = require("../models/dish");
 const User = require("../models/user");
+const fs = require("fs");
+const path = require("path");
+
+const deleteImage = (imagePath) => {
+  fs.unlink(path.join(__dirname, "..", imagePath), (err) => {
+    if (err) {
+      console.error(`Error deleting file: ${imagePath}`, err);
+    }
+  });
+};
 
 module.exports = {
   create: async (req, res, next) => {
@@ -139,6 +149,43 @@ module.exports = {
       res.json(dish);
     } catch (error) {
       next(error);
+    }
+  },
+  uploadDishImage: async (req, res) => {
+    const dishId = req.params.dishId;
+
+    try {
+      const dish = await Dish.findById(dishId);
+      if (!dish) {
+        if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+        return res.status(404).json({ message: "Dish not found" });
+      }
+
+      if (dish.author.toString() !== req.userId) {
+        if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+        return res
+          .status(403)
+          .json({ message: "Forbidden - Not allowed to update this dish" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded." });
+      }
+
+      const imagePath = `/uploads/images/${req.file.filename}`;
+      const updatedDish = await Dish.findByIdAndUpdate(
+        dishId,
+        { img: imagePath },
+        { new: true }
+      );
+
+      res.status(200).json({
+        message: "File uploaded and dish image updated successfully.",
+        dish: updatedDish,
+      });
+    } catch (error) {
+      if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+      res.status(500).json({ message: "Error updating dish image", error });
     }
   },
 };

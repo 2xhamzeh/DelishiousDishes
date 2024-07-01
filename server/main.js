@@ -15,6 +15,8 @@ const homeRouter = require("./routes/homeRoutes");
 // The lines above are old dated, they can be replaced by the following line without requiring an extra module
 app.use(express.json());
 app.use(cookieParser());
+// Using public as main directory for static content
+app.use(express.static("public"));
 
 app.use(passport.initialize());
 
@@ -33,9 +35,6 @@ mongoose
     console.log("Connected to MongoDB!");
   })
   .catch((error) => console.log(`Connection to DB failed! ${error}`));
-
-// Using public as main directory for static content
-app.use(express.static("public"));
 
 // Error handling
 app.use(errorController.handleErrors);

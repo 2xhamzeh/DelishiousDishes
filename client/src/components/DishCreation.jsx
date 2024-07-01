@@ -4,19 +4,20 @@ import { useNavigate } from "react-router-dom";
 import DishCreationIngredients from "./DishCreationIngredients";
 import DishCreationInstructions from "./DishCreationInstructions";
 import ErrorMessages from "./ErrorMessages";
+import EditDishImage from "./EditDishImage";
 
 const DishCreation = () => {
   const navigate = useNavigate();
   const [dish, setDish] = useState({
     name: "",
     time: "",
+    difficulty: "Easy",
   });
   const [ingredients, setIngredients] = useState([""]);
   const [instructions, setInstructions] = useState([""]);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  // changes form state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDish((prevState) => ({
@@ -26,62 +27,77 @@ const DishCreation = () => {
   };
 
   const validate = (ingredients, instructions) => {
-    let isValid = true; // Start assuming the form is valid
+    let isValid = true;
+    const errors = [];
 
     if (dish.name.trim() === "") {
-      error.push;
-      isValid = false; // Mark as invalid
+      errors.push("Please add a name");
+      isValid = false;
     }
 
     if (ingredients.length === 0) {
-      setErrorMessages((prevState) => [...prevState, "Please add ingredients"]);
-      isValid = false; // Mark as invalid
+      errors.push("Please add ingredients");
+      isValid = false;
     }
 
     if (instructions.length === 0) {
-      setErrorMessages((prevState) => [
-        ...prevState,
-        "Please add instructions",
-      ]);
-      isValid = false; // Mark as invalid
+      errors.push("Please add instructions");
+      isValid = false;
     }
 
-    return isValid; // Return the validation result
+    setErrorMessages(errors);
+    return isValid;
   };
 
-  const handleSubmit = () => {
-    // Remove empty ingredients and instructions
+  const handleSubmit = async () => {
     const cleanedIngredients = ingredients.filter((str) => str.trim() !== "");
     const cleanedInstructions = instructions.filter((str) => str.trim() !== "");
 
-    // Validate with the cleaned arrays
     if (validate(cleanedIngredients, cleanedInstructions)) {
-      const createDish = async () => {
-        try {
-          const response = await fetch("/api/dishes/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: dish.name,
-              time: dish.time,
-              difficulty: dish.difficulty,
-              ingredients: cleanedIngredients,
-              instructions: cleanedInstructions,
-            }),
-          });
-          if (response.status === 201) {
-            const data = await response.json();
-            navigate(`/dishes/${data._id}`);
-          } else {
-            console.log("Failed to createDish");
+      try {
+        const response = await fetch("/api/dishes/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: dish.name,
+            time: dish.time,
+            difficulty: dish.difficulty,
+            ingredients: cleanedIngredients,
+            instructions: cleanedInstructions,
+          }),
+        });
+
+        if (response.status === 201) {
+          const data = await response.json();
+
+          // If dish is created successfully, upload the image
+          if (selectedImage) {
+            const formData = new FormData();
+            formData.append("image", selectedImage);
+
+            const imageResponse = await fetch(
+              `/api/upload/dishImage/${data._id}`,
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (!imageResponse.ok) {
+              setErrorMessages(["Failed to upload image."]);
+            }
           }
-        } catch (error) {
-          console.log(error);
+
+          navigate(`/dishes/${data._id}`);
+        } else {
+          setErrorMessages(["Failed to create dish"]);
         }
-      };
-      createDish();
+      } catch (error) {
+        console.log(error);
+        setErrorMessages(["An error occurred. Please try again later"]);
+      }
     }
   };
 
@@ -96,6 +112,7 @@ const DishCreation = () => {
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center gap-4"
       >
+        <EditDishImage dish={dish} onImageSelect={setSelectedImage} />
         <div className="flex flex-col items-center">
           <label className="font-semibold text-lg" htmlFor="name">
             Name
@@ -178,7 +195,7 @@ const DishCreation = () => {
           setInstructions={setInstructions}
         />
         <ErrorMessages messages={errorMessages} />
-        <Button text="create" onClick={handleSubmit}></Button>
+        <Button text="Create" onClick={handleSubmit}></Button>
       </form>
     </div>
   );

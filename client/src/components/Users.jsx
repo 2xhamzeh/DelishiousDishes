@@ -30,7 +30,7 @@ const Users = () => {
                 key={user._id}
                 id={user._id}
                 username={user.username}
-                imgSrc={user.img}
+                img={user.img}
               />
             );
           })}
