@@ -3,7 +3,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const secret = "your_jwt_secret_key";
+const secret = process.env.SECRET;
 
 module.exports.generateToken = (user) => {
   const expiresIn = 60000; // in seconds

@@ -1,8 +1,8 @@
 // This file creates fake data for development purposes. To run, just do `node seed.js`
-
+require("dotenv").config();
 // Connect to database with mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/dish_db");
+mongoose.connect(process.env.DB_URI, { dbName: "delishious_dishes_db" });
 const db = mongoose.connection;
 db.on("error", () => console.log("Connection to DB failed!"));
 db.once("open", () => console.log("Connected to DB"));

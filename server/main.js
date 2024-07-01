@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -30,7 +32,7 @@ app.use(homeRouter);
 
 // Connect to database
 mongoose
-  .connect("mongodb://localhost:27017/dish_db")
+  .connect(process.env.DB_URI, { dbName: "delishious_dishes_db" })
   .then(() => {
     console.log("Connected to MongoDB!");
   })
