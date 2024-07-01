@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import UserProfileCard from "./UserProfileCard";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DishProfileList from "./DishProfileList";
+import useAuth from "../store/useAuth";
+import Button from "./Button";
 
 const User = () => {
+  const navigate = useNavigate();
+  const authUserId = useAuth((state) => state.authUserId);
   const { userId } = useParams();
   const [user, setUser] = useState({
     username: "",
@@ -32,14 +36,24 @@ const User = () => {
 
   return (
     <div className="flex items-start gap-5 p-5">
-      <UserProfileCard
-        username={user.username}
-        img={user.img}
-        description={user.description}
-        date={user.date}
-        posts={user.dishes.length}
-        likes={user.likes}
-      />
+      <div>
+        <UserProfileCard
+          username={user.username}
+          img={user.img}
+          description={user.description}
+          date={user.date}
+          posts={user.dishes.length}
+          likes={user.likes}
+        />
+        {authUserId === userId && (
+          <div className="flex justify-center">
+            <Button
+              onClick={() => navigate(`/users/editProfile`)}
+              text={"Edit Profile"}
+            />
+          </div>
+        )}
+      </div>
       <div className="p-2">
         {user.dishes && user.dishes.length > 0 && (
           <DishProfileList

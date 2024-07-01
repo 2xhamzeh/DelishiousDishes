@@ -73,7 +73,6 @@ const DishCreation = () => {
           });
           if (response.status === 201) {
             const data = await response.json();
-            console.log(data);
             navigate(`/dishes/${data._id}`);
           } else {
             console.log("Failed to createDish");

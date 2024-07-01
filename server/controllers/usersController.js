@@ -106,6 +106,12 @@ module.exports = {
     }
 
     try {
+      // Check if the new username already exists
+      const existingUser = await User.findOne({ username: req.body.username });
+      if (existingUser && existingUser._id.toString() !== userId) {
+        return res.status(409).send({ message: "Username already taken" });
+      }
+
       // Update the user document
       await User.findByIdAndUpdate(
         userId,

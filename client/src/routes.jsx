@@ -12,6 +12,7 @@ import User from "./components/User";
 import DishCreation from "./components/DishCreation";
 import LikedDishList from "./components/LikedDishList";
 import CreatedDishList from "./components/CreatedDishList";
+import EditProfile from "./components/EditProfile";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "users/:userId/liked",
         element: <LikedDishList />,
+      },
+      {
+        path: "users/editProfile",
+        element: <EditProfile />,
       },
       {
         path: "help",
