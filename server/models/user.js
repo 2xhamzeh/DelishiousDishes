@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Dish",
+      default: [],
     },
   ],
   img: {
@@ -46,7 +47,9 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.virtual("likes").get(function () {
-  return this.dishes.reduce((total, dish) => total + (dish.likes || 0), 0);
+  return this.dishes
+    ? this.dishes.reduce((total, dish) => total + (dish.likes || 0), 0)
+    : 0;
 });
 
 userSchema.plugin(passportLocalMongoose, {

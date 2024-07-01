@@ -6,10 +6,13 @@ module.exports = {
     const { name, img, time, difficulty, ingredients, instructions } = req.body;
     const author = req.userId; // Ensure req.userId is set by JWT middleware
 
-    if (!name || !ingredients || !instructions || !author) {
-      return res
-        .status(400)
-        .send({ error: { status: 400, message: "Missing required fields" } });
+    if (
+      !name ||
+      ingredients.length === 0 ||
+      instructions.length === 0 ||
+      !author
+    ) {
+      return res.status(400).json({ error: "Missing required fields." });
     }
 
     const dish = new Dish({
@@ -24,111 +27,93 @@ module.exports = {
 
     try {
       const newDish = await dish.save();
-
-      // Update the author's dishes array
-      await User.findByIdAndUpdate(author, {
-        $push: { dishes: newDish._id },
-      });
-
-      res.status(201).send(newDish);
+      await User.findByIdAndUpdate(author, { $push: { dishes: newDish._id } });
+      res.status(201).json(newDish);
     } catch (error) {
-      console.error(
-        "Error creating dish and updating user's dishes array:",
-        error
-      );
+      console.error("Error creating dish:", error);
       next(error);
     }
   },
 
-  readAll: (req, res, next) => {
-    Dish.find({})
-      .select("name img") // Only include _id, name, and img
-      .exec()
-      .then((dishes) => res.send(dishes))
-      .catch(next);
+  readAll: async (req, res, next) => {
+    try {
+      const dishes = await Dish.find({}).select("name img").exec();
+      res.json(dishes);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  read: (req, res, next) => {
+  read: async (req, res, next) => {
     const id = req.params.id;
-    Dish.findById(id)
-      .populate("author", "username img")
-      .exec()
-      .then((dish) => {
-        if (!dish) {
-          return res.status(404).send();
-        }
-        res.send(dish);
-      })
-      .catch(next);
+    try {
+      const dish = await Dish.findById(id)
+        .populate("author", "username img")
+        .exec();
+      if (!dish) {
+        return res.status(404).json({ error: "Dish not found." });
+      }
+      res.json(dish);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  update: (req, res, next) => {
+  update: async (req, res, next) => {
     const id = req.params.id;
     const updateFields = req.body;
+
     if (Object.keys(updateFields).length === 0) {
-      return res.status(400).send({
-        error: { status: 400, message: "No fields to update provided" },
-      });
+      return res.status(400).json({ error: "No fields to update provided." });
     }
 
-    Dish.findByIdAndUpdate(
-      id,
-      { $set: updateFields },
-      { new: true, runValidators: true }
-    )
-      .exec()
-      .then((updatedDish) => {
-        if (!updatedDish) {
-          return res.status(404).send();
-        }
-        res.send(updatedDish);
-      })
-      .catch(next);
+    try {
+      const updatedDish = await Dish.findByIdAndUpdate(
+        id,
+        { $set: updateFields },
+        { new: true, runValidators: true }
+      ).exec();
+      if (!updatedDish) {
+        return res.status(404).json({ error: "Dish not found." });
+      }
+      res.json(updatedDish);
+    } catch (error) {
+      next(error);
+    }
   },
 
   delete: async (req, res, next) => {
     const id = req.params.id;
-
     try {
       const deletedDish = await Dish.findByIdAndDelete(id).exec();
       if (!deletedDish) {
-        return res.status(404).send();
+        return res.status(404).json({ error: "Dish not found." });
       }
-
-      // Remove the dish ID from the liked array of all users
-      await User.updateMany({ liked: id }, { $pull: { liked: id } }).exec();
-
-      res.send(deletedDish);
+      await User.updateMany({}, { $pull: { liked: id, dishes: id } }).exec();
+      res.json(deletedDish);
     } catch (error) {
       next(error);
     }
   },
 
   like: async (req, res, next) => {
-    console.log("like");
     const userId = req.userId;
     const dishId = req.params.id;
 
     try {
       const dish = await Dish.findById(dishId);
       if (!dish) {
-        return res.status(404).send({ message: "Dish not found" });
+        return res.status(404).json({ error: "Dish not found." });
       }
 
-      // Check if the user has already liked the dish
       if (dish.likedBy.includes(userId)) {
-        return res.status(400).send({ message: "Dish already liked" });
+        return res.status(400).json({ error: "Dish already liked." });
       }
 
-      // Add the user to the dish's likedBy array
       dish.likedBy.push(userId);
-      dish.likes += 1;
       await dish.save();
-
-      // Add the dish to the user's liked array
       await User.findByIdAndUpdate(userId, { $addToSet: { liked: dishId } });
-
-      res.status(200).send(dish);
+      res.json(dish);
     } catch (error) {
       next(error);
     }
@@ -141,23 +126,17 @@ module.exports = {
     try {
       const dish = await Dish.findById(dishId);
       if (!dish) {
-        return res.status(404).send({ message: "Dish not found" });
+        return res.status(404).json({ error: "Dish not found." });
       }
 
-      // Check if the user has not liked the dish
       if (!dish.likedBy.includes(userId)) {
-        return res.status(400).send({ message: "Dish not liked yet" });
+        return res.status(400).json({ error: "Dish not previously liked." });
       }
 
-      // Remove the user from the dish's likedBy array
       dish.likedBy = dish.likedBy.filter((id) => id.toString() !== userId);
-      dish.likes -= 1;
       await dish.save();
-
-      // Remove the dish from the user's liked array
       await User.findByIdAndUpdate(userId, { $pull: { liked: dishId } });
-
-      res.status(200).send(dish);
+      res.json(dish);
     } catch (error) {
       next(error);
     }

@@ -10,10 +10,6 @@ const dishSchema = new mongoose.Schema({
   img: {
     type: String,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
   time: {
     type: Number, // assuming time is in minutes
   },
@@ -46,6 +42,7 @@ const dishSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      default: [],
     },
   ],
 });
@@ -54,6 +51,14 @@ const dishSchema = new mongoose.Schema({
 function arrayLimit(val) {
   return val.length > 0;
 }
+
+// Virtual field to count likes based on the length of the likedBy array
+dishSchema.virtual("likes").get(function () {
+  return this.likedBy ? this.likedBy.length : 0;
+});
+
+dishSchema.set("toJSON", { virtuals: true });
+dishSchema.set("toObject", { virtuals: true });
 
 const Dish = mongoose.model("Dish", dishSchema);
 

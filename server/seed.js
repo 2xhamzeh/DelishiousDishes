@@ -17,7 +17,7 @@ const User = require("./models/user");
 const dishes = [
   {
     name: "Fettuccine Alfredo",
-    likes: 10,
+    img: "",
     time: 30,
     difficulty: "Easy",
     ingredients: ["Fettuccine", "Cream", "Parmesan"],
@@ -25,7 +25,7 @@ const dishes = [
   },
   {
     name: "Falafel",
-    likes: 20,
+    img: "",
     time: 45,
     difficulty: "Medium",
     ingredients: ["Chickpeas", "Garlic", "Parsley"],
@@ -33,7 +33,7 @@ const dishes = [
   },
   {
     name: "Shawarma",
-    likes: 15,
+    img: "",
     time: 60,
     difficulty: "Hard",
     ingredients: ["Chicken", "Spices", "Flatbread"],
@@ -41,7 +41,7 @@ const dishes = [
   },
   {
     name: "Cheese Cake",
-    likes: 25,
+    img: "",
     time: 90,
     difficulty: "Medium",
     ingredients: ["Cream cheese", "Sugar", "Graham crackers"],
@@ -49,7 +49,7 @@ const dishes = [
   },
   {
     name: "Margherita Pizza",
-    likes: 30,
+    img: "",
     time: 40,
     difficulty: "Easy",
     ingredients: ["Pizza dough", "Tomato sauce", "Mozzarella", "Basil"],
@@ -57,7 +57,7 @@ const dishes = [
   },
   {
     name: "Pad Thai",
-    likes: 40,
+    img: "",
     time: 50,
     difficulty: "Medium",
     ingredients: ["Rice noodles", "Shrimp", "Tofu", "Peanuts", "Bean sprouts"],
@@ -65,7 +65,7 @@ const dishes = [
   },
   {
     name: "Tacos",
-    likes: 35,
+    img: "",
     time: 30,
     difficulty: "Easy",
     ingredients: ["Tortillas", "Ground beef", "Lettuce", "Cheese", "Salsa"],
@@ -73,7 +73,7 @@ const dishes = [
   },
   {
     name: "Sushi",
-    likes: 50,
+    img: "",
     time: 60,
     difficulty: "Hard",
     ingredients: ["Sushi rice", "Nori", "Fish", "Vegetables"],
@@ -86,7 +86,7 @@ const dishes = [
   },
   {
     name: "Chocolate Cake",
-    likes: 45,
+    img: "",
     time: 90,
     difficulty: "Medium",
     ingredients: ["Flour", "Cocoa powder", "Sugar", "Eggs", "Butter"],
@@ -99,7 +99,7 @@ const dishes = [
   },
   {
     name: "Chicken Curry",
-    likes: 55,
+    img: "",
     time: 70,
     difficulty: "Medium",
     ingredients: ["Chicken", "Curry paste", "Coconut milk", "Vegetables"],
@@ -112,7 +112,7 @@ const dishes = [
   },
   {
     name: "Lasagna",
-    likes: 60,
+    img: "",
     time: 120,
     difficulty: "Hard",
     ingredients: ["Lasagna noodles", "Ground beef", "Tomato sauce", "Cheese"],
@@ -125,7 +125,7 @@ const dishes = [
   },
   {
     name: "Biryani",
-    likes: 70,
+    img: "",
     time: 90,
     difficulty: "Hard",
     ingredients: ["Basmati rice", "Chicken", "Yogurt", "Spices"],
@@ -133,7 +133,7 @@ const dishes = [
   },
   {
     name: "Caesar Salad",
-    likes: 25,
+    img: "",
     time: 20,
     difficulty: "Easy",
     ingredients: ["Romaine lettuce", "Caesar dressing", "Croutons", "Parmesan"],
@@ -141,7 +141,7 @@ const dishes = [
   },
   {
     name: "Pancakes",
-    likes: 35,
+    img: "",
     time: 20,
     difficulty: "Easy",
     ingredients: ["Flour", "Milk", "Eggs", "Baking powder", "Sugar"],
@@ -149,7 +149,7 @@ const dishes = [
   },
   {
     name: "Grilled Cheese",
-    likes: 30,
+    img: "",
     time: 10,
     difficulty: "Easy",
     ingredients: ["Bread", "Butter", "Cheese"],
@@ -157,7 +157,7 @@ const dishes = [
   },
   {
     name: "Beef Stroganoff",
-    likes: 40,
+    img: "",
     time: 60,
     difficulty: "Medium",
     ingredients: ["Beef", "Mushrooms", "Onion", "Sour cream"],
@@ -165,7 +165,7 @@ const dishes = [
   },
   {
     name: "Clam Chowder",
-    likes: 45,
+    img: "",
     time: 45,
     difficulty: "Medium",
     ingredients: ["Clams", "Potatoes", "Onions", "Cream"],
@@ -173,7 +173,7 @@ const dishes = [
   },
   {
     name: "Eggs Benedict",
-    likes: 50,
+    img: "",
     time: 30,
     difficulty: "Hard",
     ingredients: ["English muffins", "Eggs", "Ham", "Hollandaise sauce"],
@@ -181,7 +181,7 @@ const dishes = [
   },
   {
     name: "Ratatouille",
-    likes: 40,
+    img: "",
     time: 60,
     difficulty: "Medium",
     ingredients: ["Eggplant", "Zucchini", "Tomatoes", "Bell peppers"],
@@ -189,7 +189,7 @@ const dishes = [
   },
   {
     name: "Chicken Alfredo",
-    likes: 35,
+    img: "",
     time: 40,
     difficulty: "Easy",
     ingredients: ["Chicken", "Fettuccine", "Cream", "Parmesan"],
@@ -202,7 +202,7 @@ const dishes = [
   },
   {
     name: "Fish Tacos",
-    likes: 55,
+    img: "",
     time: 30,
     difficulty: "Easy",
     ingredients: ["Fish fillets", "Tortillas", "Cabbage", "Salsa"],
@@ -210,7 +210,7 @@ const dishes = [
   },
   {
     name: "BBQ Ribs",
-    likes: 60,
+    img: "",
     time: 180,
     difficulty: "Hard",
     ingredients: ["Pork ribs", "BBQ sauce", "Spices"],
@@ -218,7 +218,7 @@ const dishes = [
   },
   {
     name: "Greek Salad",
-    likes: 25,
+    img: "",
     time: 15,
     difficulty: "Easy",
     ingredients: ["Cucumber", "Tomatoes", "Feta cheese", "Olives"],
@@ -230,7 +230,7 @@ const dishes = [
   },
   {
     name: "Stuffed Peppers",
-    likes: 45,
+    img: "",
     time: 60,
     difficulty: "Medium",
     ingredients: ["Bell peppers", "Ground beef", "Rice", "Tomato sauce"],
@@ -238,7 +238,7 @@ const dishes = [
   },
   {
     name: "Lemon Meringue Pie",
-    likes: 50,
+    img: "",
     time: 90,
     difficulty: "Hard",
     ingredients: ["Lemon", "Sugar", "Eggs", "Pie crust"],
@@ -250,7 +250,7 @@ const dishes = [
   },
   {
     name: "Chicken Tikka Masala",
-    likes: 60,
+    img: "",
     time: 60,
     difficulty: "Medium",
     ingredients: ["Chicken", "Yogurt", "Spices", "Tomato sauce"],
@@ -258,7 +258,7 @@ const dishes = [
   },
   {
     name: "Goulash",
-    likes: 35,
+    img: "",
     time: 75,
     difficulty: "Medium",
     ingredients: ["Beef", "Onions", "Paprika", "Potatoes"],
@@ -270,7 +270,7 @@ const dishes = [
   },
   {
     name: "Quiche Lorraine",
-    likes: 40,
+    img: "",
     time: 60,
     difficulty: "Medium",
     ingredients: ["Pie crust", "Eggs", "Bacon", "Cream"],
@@ -283,7 +283,7 @@ const dishes = [
   },
   {
     name: "Bruschetta",
-    likes: 30,
+    img: "",
     time: 20,
     difficulty: "Easy",
     ingredients: ["Baguette", "Tomatoes", "Garlic", "Basil"],
@@ -291,7 +291,7 @@ const dishes = [
   },
   {
     name: "Shrimp Scampi",
-    likes: 45,
+    img: "",
     time: 30,
     difficulty: "Easy",
     ingredients: ["Shrimp", "Garlic", "Butter", "Lemon"],
@@ -444,7 +444,6 @@ const seedDatabase = async () => {
       const dish = new Dish({
         name: dishes[i].name,
         img: dishes[i].img,
-        likes: dishes[i].likes,
         time: dishes[i].time,
         difficulty: dishes[i].difficulty,
         ingredients: dishes[i].ingredients,

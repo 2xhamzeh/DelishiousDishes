@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Dish = require("../models/dish"); // Ensure you require Dish if you use it
 const passport = require("passport");
 const jwtAuth = require("../middleware/jwtAuth");
 
@@ -13,16 +14,16 @@ module.exports = {
         console.log("Authentication failed. User not found.");
         return res
           .status(401)
-          .send({ message: "Username or password incorrect" });
+          .json({ message: "Username or password incorrect" });
       }
       const { token, expiresIn } = jwtAuth.generateToken(user);
       const expiryDate = new Date(Date.now() + expiresIn * 1000).toISOString();
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
         sameSite: "Strict",
       });
-      res.send({
+      res.json({
         message: "User authenticated!",
         user: { id: user.id, username: user.username },
         tokenExpiry: expiryDate,
@@ -30,145 +31,129 @@ module.exports = {
     })(req, res, next);
   },
 
-  logout: (req, res, next) => {
+  logout: (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
     });
-    res.send("User logged out");
+    res.json({ message: "User logged out successfully" });
   },
 
-  readAll: (req, res, next) => {
-    User.find({})
-      .select("username img")
-      .exec()
-      .then((users) => {
-        res.send(users);
-      })
-      .catch(next);
+  readAll: async (req, res, next) => {
+    try {
+      const users = await User.find({}).select("username img").exec();
+      res.json(users);
+    } catch (error) {
+      next(error);
+    }
   },
 
   create: async (req, res, next) => {
     const { username, password, description, img } = req.body;
 
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Username and password are required" });
+    }
+
     try {
-      // Check if the username already exists
       const existingUser = await User.findOne({ username });
       if (existingUser) {
         return res.status(409).json({ message: "Username already taken" });
       }
 
-      // Register the new user
-      User.register(
-        new User({ username, description, img }),
-        password,
-        (err, user) => {
-          if (err) {
-            return next(err);
-          }
-          res
-            .status(201)
-            .send({ user: { id: user.id, username: user.username } });
+      const user = new User({ username, description, img });
+      User.register(user, password, (err, user) => {
+        if (err) {
+          console.error("Error registering new user:", err);
+          return next(err);
         }
-      );
+        res
+          .status(201)
+          .json({ user: { id: user.id, username: user.username } });
+      });
     } catch (err) {
       next(err);
     }
   },
 
-  read: (req, res, next) => {
+  read: async (req, res, next) => {
     const userId = req.params.id;
-    User.findById(userId)
-      .populate({
-        path: "dishes",
-        select: "name img likes", // Only include _id, name, and img (picture)
-      })
-      .populate({
-        path: "liked",
-        select: "name img", // Only include _id, name, and img (picture)
-      })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send();
-        }
-        res.send(user);
-      })
-      .catch(next);
+    try {
+      const user = await User.findById(userId)
+        .populate("dishes", "name img likes")
+        .populate("liked", "name img")
+        .exec();
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
   },
 
   update: async (req, res, next) => {
     const userId = req.params.id;
-
-    // Check if the authenticated user is the same as the user being updated
     if (req.userId !== userId) {
-      return res.status(403).send({ message: "Forbidden" });
+      return res
+        .status(403)
+        .json({ message: "Forbidden - Not allowed to update this user" });
     }
 
     try {
-      // Check if the new username already exists
-      const existingUser = await User.findOne({ username: req.body.username });
-      if (existingUser && existingUser._id.toString() !== userId) {
-        return res.status(409).send({ message: "Username already taken" });
-      }
-
-      // Update the user document
-      await User.findByIdAndUpdate(
-        userId,
-        { $set: req.body },
-        { runValidators: true }
-      );
-
-      // Fetch the updated user with the required fields populated
-      const updatedUser = await User.findById(userId)
-        .populate({
-          path: "dishes",
-          select: "name img likes", // Only include _id, name, and img (picture)
-        })
-        .populate({
-          path: "liked",
-          select: "name img", // Only include _id, name, and img (picture)
+      const updateData = { ...req.body };
+      if (updateData.username) {
+        const existingUser = await User.findOne({
+          username: updateData.username,
         });
-
-      if (!updatedUser) {
-        return res.status(404).send();
+        if (existingUser && existingUser._id.toString() !== userId) {
+          return res.status(409).json({ message: "Username already in use" });
+        }
       }
 
-      res.send(updatedUser);
-    } catch (err) {
-      next(err);
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      )
+        .populate("dishes", "name img likes")
+        .populate("liked", "name img")
+        .exec();
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(updatedUser);
+    } catch (error) {
+      next(error);
     }
   },
 
   delete: async (req, res, next) => {
     const userId = req.params.id;
     if (req.userId !== userId) {
-      return res.status(403).send({ message: "Forbidden" });
+      return res
+        .status(403)
+        .json({ message: "Forbidden - Not allowed to delete this user" });
     }
 
     try {
-      // Find the user to delete
       const user = await User.findByIdAndDelete(userId).exec();
       if (!user) {
-        return res.status(404).send();
+        return res.status(404).json({ message: "User not found" });
       }
-
-      // Delete all dishes authored by the user
       await Dish.deleteMany({ author: userId }).exec();
-
-      // Remove the user from all likedBy arrays in dishes
       await Dish.updateMany(
         { likedBy: userId },
         { $pull: { likedBy: userId } }
       ).exec();
-
-      // Remove the user's ID from the liked array in all users
       await User.updateMany(
         { liked: userId },
         { $pull: { liked: userId } }
       ).exec();
-
-      res.send(user);
+      res.json({ message: "User deleted successfully", user });
     } catch (error) {
       next(error);
     }

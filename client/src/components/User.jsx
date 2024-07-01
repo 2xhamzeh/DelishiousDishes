@@ -28,7 +28,7 @@ const User = () => {
         const data = await response.json();
         setUser(data);
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     };
     getUser();
