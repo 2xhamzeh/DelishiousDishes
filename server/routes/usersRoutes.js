@@ -3,6 +3,7 @@ const router = express.Router();
 const usersController = require("../controllers/usersController");
 const { verifyToken } = require("../middleware/jwtAuth");
 
+router.get("/isAuthenticated", verifyToken, usersController.isAuthenticated);
 router.post("/authenticate", usersController.authenticate);
 router.post("/logout", verifyToken, usersController.logout);
 router.get("/", usersController.readAll);

@@ -14,6 +14,14 @@ const deleteImage = (imagePath) => {
 };
 
 module.exports = {
+  isAuthenticated: async (req, res, next) => {
+    const userId = req.userId;
+    if (userId) {
+      res.status(200).json({ message: "User is authenticated" });
+    } else {
+      res.status(401).json({ message: "User is not authenticated" });
+    }
+  },
   authenticate: async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) {

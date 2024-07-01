@@ -13,13 +13,28 @@ const Root = () => {
 
   // this is used when refreshing the page to get the state of the authentication
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    if (isAuthenticated) {
-      // token logic here
-      login();
-    } else {
-      logout();
-    }
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/users/isAuthenticated", {
+          method: "GET",
+        });
+        if (response.status === 200) {
+          const isAuthenticated =
+            localStorage.getItem("isAuthenticated") === "true";
+          if (isAuthenticated) {
+            // token logic here
+            login();
+          } else {
+            logout();
+          }
+        } else {
+          logout();
+        }
+      } catch {
+        console.log("error");
+      }
+    };
+    checkAuth();
   }, []);
 
   // this navigate to login page when the session times out
