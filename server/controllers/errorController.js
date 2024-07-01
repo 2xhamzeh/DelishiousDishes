@@ -5,6 +5,6 @@ module.exports = {
     error.message = error.message || "Error";
     console.log(error.stack);
 
-    return res.status(error.status).send({ message: error.message });
+    return res.status(error.status).json({ message: error.message });
   },
 };
