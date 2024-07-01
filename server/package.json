@@ -7,7 +7,7 @@
     "start": "node main.js",
     "seed": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm i --prefix ./client "
+    "build": "cd ../client && npm i && npm run build && mv dist ../server && cd ../server && npm i"
   },
   "author": "Hamzeh, Truc, Marwa",
   "license": "ISC",
