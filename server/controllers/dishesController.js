@@ -2,15 +2,15 @@ const Dish = require("../models/dish");
 const User = require("../models/user");
 const fs = require("fs");
 const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
-const deleteImage = (imagePath) => {
-  fs.unlink(path.join(__dirname, "..", imagePath), (err) => {
+const deleteLocalFile = (filePath) => {
+  fs.unlink(filePath, (err) => {
     if (err) {
-      console.error(`Error deleting file: ${imagePath}`, err);
+      console.error("Error deleting local file:", err);
     }
   });
 };
-
 module.exports = {
   create: async (req, res, next) => {
     const { name, img, time, difficulty, ingredients, instructions } = req.body;
@@ -157,12 +157,12 @@ module.exports = {
     try {
       const dish = await Dish.findById(dishId);
       if (!dish) {
-        if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+        if (req.file) deleteLocalFile(req.file.path);
         return res.status(404).json({ message: "Dish not found" });
       }
 
       if (dish.author.toString() !== req.userId) {
-        if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+        if (req.file) deleteLocalFile(req.file.path);
         return res
           .status(403)
           .json({ message: "Forbidden - Not allowed to update this dish" });
@@ -172,19 +172,23 @@ module.exports = {
         return res.status(400).json({ message: "No file uploaded." });
       }
 
-      const imagePath = `/uploads/images/${req.file.filename}`;
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "dishes",
+      });
       const updatedDish = await Dish.findByIdAndUpdate(
         dishId,
-        { img: imagePath },
+        { img: result.secure_url },
         { new: true }
       );
+
+      deleteLocalFile(req.file.path);
 
       res.status(200).json({
         message: "File uploaded and dish image updated successfully.",
         dish: updatedDish,
       });
     } catch (error) {
-      if (req.file) deleteImage(`/uploads/images/${req.file.filename}`);
+      if (req.file) deleteLocalFile(req.file.path);
       res.status(500).json({ message: "Error updating dish image", error });
     }
   },
