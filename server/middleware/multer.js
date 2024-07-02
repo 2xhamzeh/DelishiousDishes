@@ -3,7 +3,7 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Temporary storage location
+    cb(null, "tempUploads/"); // Temporary storage location
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
