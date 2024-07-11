@@ -21,6 +21,13 @@ app.use(cookieParser());
 // Using public as main directory for static content
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname + "/dist")));
+// Update the Express Backend to Serve Static Files from the React Frontend
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
 
 app.use(passport.initialize());
 

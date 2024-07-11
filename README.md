@@ -27,3 +27,12 @@ To start the client, follow these steps:
 5. After the installation is complete, start the client by running the command: `npm run dev`
 
 You should see a message saying "VITE v5.2.11 ready in 2494 ms" and a local URL. This means the client has started successfully and is running on your local machine.
+
+## Using Docker
+
+1. Open your terminal.
+2. Navigate to the project directory using the `cd` command.
+3. Once you're in the project directory, navigate to the server directory: `cd server`
+
+4. Build the Docker Image with `docker build -t delishious-dishes .`
+5. Run the Docker Container with `docker run -p 4000:3000 -d delishious-dishes`
