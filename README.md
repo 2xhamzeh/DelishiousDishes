@@ -6,6 +6,29 @@ Truc
 Hamzeh
 
 
+## Using Docker
+
+1. Open your terminal.
+2. Navigate to the client directory: `cd client`
+3. Ensure that the React app is correctly built before building the Docker images and starting the Docker containers:   `npm run build`
+
+4. Navigate to the project root directory using the `cd ..` command.
+
+Note: This isn't really necessary anymore since docker-compose will handle it. 
+>>>
+Manually copy the dist directory before building the Docker image.
+5. Copy the new 'client/dist' folder in the server folder with `cp -r client/dist server/dist/`
+>>>
+
+Note: the `docker-compose` command is used to mange multi-container applications
+6. Build the docker client and server images with `docker-compose build`
+7. Start the Docker Container with `docker-compose up`
+
+8. The application is accessible at port 4000. You can visit the delishious dishes website at <localhost:4000>
+
+9. You can stop and remove the containers using `docker compose down`.
+
+
 ## Starting the Server
 
 To start the server, follow these steps:
@@ -28,21 +51,3 @@ To start the client, follow these steps:
 
 You should see a message saying "VITE v5.2.11 ready in 2494 ms" and a local URL. This means the client has started successfully and is running on your local machine.
 
-## Using Docker
-
-1. Open your terminal.
-2. Navigate to the client directory: `cd client`
-3. Ensure that the React app is correctly built before building the Docker images and starting the Docker containers:   `npm run build`
-
->>>
-This isn't really necessary anymore since docker-compose will handle it. 
-4. Copy the new 'client/dist' folder in the server folder
->>>
-
-5. Navigate to the project root directory using the `cd ..` command.
-
-Note: the `docker-compose` command is used to mange multi-container applications
-6. Build the docker client and server images with `docker-compose build`
-7. Start the Docker Container with `docker-compose up`
-
-8. The application is accessible at port 4000. You can visit the delishious dishes website at <localhost:4000>
