@@ -18,6 +18,15 @@ const homeRouter = require("./routes/homeRoutes");
 // The lines above are old dated, they can be replaced by the following line without requiring an extra module
 app.use(express.json());
 app.use(cookieParser());
+
+// Update the Express Backend to Serve Static Files from the React Frontend
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
+});
+
 // Using public as main directory for static content
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname + "/dist")));
